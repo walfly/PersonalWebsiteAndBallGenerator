@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<script src="public/javescripts/underscore.js"></script>
+    <script src="public/javescripts/jquery.js"></script>
+  	<script src="public/javescripts/three.min.js"></script>
+    <script src="public/javescripts/Ball.js"></script>
+    <script src="public/javescripts/trackball.js"></script>
+    <script src="public/javescripts/stats.js"></script>
+    <script src="public/javescripts/detector.js"></script>
+    <link rel="stylesheet" type="text/css" href="public/stylesheets/styles.css">
+  </head>
+  <body>
+    <div id='parameters'>
+      <p>red <input class='colorchange' id='red' type='range' name='surfacenum' min='0' max = '255'></p>
+      <p>green <input class='colorchange' id='green' type='range' name='surfacenum' min='0' max = '255'></p>
+      <p>blue <input class='colorchange' id='blue' type='range' name='surfacenum' min='0' max = '255'></p>
+      <p>surfaces  <input class='surfacechange' id='surface' type='range' name='surfacenum' min='4' max = '30' value= "11"></p>
+      <p>outer radius <input class='surfacechange' id='outer' type='range' name='surfacenum' min='15' max = '105' value= "55"></p>
+      <p>inner radius <input class='surfacechange' id='inner' type='range' name='surfacenum' min='10' max = '100' value= "50"></p>
+    </div>
+  	<div id="container"></div>
+  	<script>
+      $(document).ready(function(){
+        if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+
+        var container, stats;
+
+        var camera, controls, scene, renderer;
+
+        var cross;
+
+        var ball, col, mat, surface, flatPat;
+
+        var $red = $('#red');
+        var $green = $('#green');
+        var $blue = $('#blue');
+        var $surface = $('#surface');
+        var $inner = $("#inner");
+        var $outer = $("#outer");
+
+        var red = $red.val();
+        var green = $green.val();
+        var blue = $blue.val();
+        var outer = $outer.val();
+        var inner = $inner.val();
+        var surfaceCount = $surface.val();
+
+        $('.colorchange').on('change', function(){
+          green = $green.val();
+          red = $red.val();
+          blue = $blue.val();
+          render({color: true});
+        });
+
+        $('.surfacechange').on('mouseup', function(){
+          surfaceCount = $surface.val();
+          outer = $outer.val();
+          inner = $inner.val();
+          render({surface: true})
+        });
+
+        init();
+        animate();
+
+        function init() {
+
+          camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
+          camera.position.z = 150;
+
+          controls = new THREE.TrackballControls( camera , document.getElementById('container'));
+
+          controls.rotateSpeed = 1.0;
+          controls.zoomSpeed = 1.2;
+          controls.panSpeed = 0.8;
+
+          controls.noZoom = false;
+          controls.noPan = true;
+
+          controls.staticMoving = true;
+          controls.dynamicDampingFactor = 0.3;
+
+          controls.keys = [ 65, 83, 68 ];
+
+          controls.addEventListener( 'change', render );
+
+          // world
+
+          scene = new THREE.Scene();
+          //scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
+          col = new THREE.Color('rgb('+red+','+green+','+blue+')');
+          mat = new THREE.MeshPhongMaterial({color: col, side: THREE.DoubleSide, opacity: 1, transparent: false, needsUpdate: true});
+          console.log(surfaceCount);
+          console.log(surfaceCount === "11");
+          ball = new Ball(inner, outer, surfaceCount);
+          surface = new THREE.Mesh(ball, mat);
+          console.log(surface);
+          scene.add(surface);
+
+          // lights
+
+          light = new THREE.PointLight( 0xffffff );
+          light.position.set( 70, 70, 70 );
+          scene.add( light );
+
+          light = new THREE.DirectionalLight( 0xffffff);
+          light.position.set( -70, -70, -70 );
+          scene.add( light );
+
+          light = new THREE.AmbientLight( 0x222222 );
+          scene.add( light );
+
+
+          // renderer
+
+          renderer = new THREE.WebGLRenderer( { antialias: false } );
+          //renderer.setClearColor( scene.fog.color, 1 );
+          renderer.setSize( window.innerWidth, window.innerHeight );
+
+          container = document.getElementById( 'container' );
+          container.appendChild( renderer.domElement );
+
+          stats = new Stats();
+          stats.domElement.style.position = 'absolute';
+          stats.domElement.style.top = '0px';
+          stats.domElement.style.zIndex = 100;
+          container.appendChild( stats.domElement );
+
+          //
+
+          window.addEventListener( 'resize', onWindowResize, false );
+
+        }
+
+        function onWindowResize() {
+
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+
+          renderer.setSize( window.innerWidth, window.innerHeight );
+
+          controls.handleResize();
+
+          render();
+
+        }
+
+        function animate() {
+
+          requestAnimationFrame( animate );
+          controls.update();
+          render();
+
+        }
+
+        function render(options) {
+          options = options || {};
+          options.color = options.color || false;
+          options.surface = options.surface || false;
+          options.flatten = options.flatten || false;
+          if (options.color){
+            col = new THREE.Color('rgb('+red+','+green+','+blue+')');
+            surface.material.color = col;
+            surface.material.needsUpdate = true;
+          }
+          if (options.surface){
+            ball = new Ball(inner, outer, surfaceCount);
+            scene.remove(surface);
+            surface = new THREE.Mesh(ball, mat);
+            scene.add(surface);
+          }
+          if (options.flatten){
+            ball = new BallToFlat(inner, outer, surfaceCount);
+            flatPat = new Flattened(ball.surfaces[0], 0);
+            console.log(flatPat);
+            scene.remove(surface);
+            surface = new THREE.Mesh(flatPat, mat);
+            scene.add(surface);
+          }
+
+          renderer.render( scene, camera );
+          stats.update();
+
+        }
+      });
+
+
+    </script>
+  </body>
+</html>
