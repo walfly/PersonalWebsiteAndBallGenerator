@@ -8,6 +8,8 @@
     <script src="/javascripts/trackball.js"></script>
     <script src="/javascripts/stats.js"></script>
     <script src="/javascripts/detector.js"></script>
+    <script src="/javascripts/BallToFlatten.js"></script>
+    <script src="/javascripts/Flattener.js"></script>
     <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
   </head>
   <body>
@@ -18,6 +20,7 @@
       <p>surfaces  <input class='surfacechange' id='surface' type='range' name='surfacenum' min='4' max = '30' value= "11"></p>
       <p>outer radius <input class='surfacechange' id='outer' type='range' name='surfacenum' min='15' max = '105' value= "55"></p>
       <p>inner radius <input class='surfacechange' id='inner' type='range' name='surfacenum' min='10' max = '100' value= "50"></p>
+      <button id="flatten">Flatten</button>
     </div>
   	<div id="container"></div>
   	<script>
@@ -38,6 +41,7 @@
         var $surface = $('#surface');
         var $inner = $("#inner");
         var $outer = $("#outer");
+        var $flatten = $("#flatten");
 
         var red = $red.val();
         var green = $green.val();
@@ -58,6 +62,10 @@
           outer = $outer.val();
           inner = $inner.val();
           render({surface: true})
+        });
+
+        $flatten.on('click', function(){
+          render({flatten: true});
         });
 
         init();
@@ -89,7 +97,7 @@
           scene = new THREE.Scene();
           //scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
           col = new THREE.Color('rgb('+red+','+green+','+blue+')');
-          mat = new THREE.MeshPhongMaterial({color: col, side: THREE.DoubleSide, opacity: 1, transparent: false, needsUpdate: true});
+          mat = new THREE.MeshLambertMaterial({color: col, side: THREE.DoubleSide, opacity: 1, transparent: false, wireframe: true});
           console.log(surfaceCount);
           console.log(surfaceCount === "11");
           ball = new Ball(inner, outer, surfaceCount);
@@ -171,7 +179,7 @@
           }
           if (options.flatten){
             ball = new BallToFlat(inner, outer, surfaceCount);
-            flatPat = new Flattened(ball.surfaces[0], 0);
+            flatPat = new Flattened(ball.surfaces[2], 0);
             console.log(flatPat);
             scene.remove(surface);
             surface = new THREE.Mesh(flatPat, mat);
