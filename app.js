@@ -45,10 +45,10 @@ app.post('/submit', function(req, res){
   var geo = req.body.obj;
   var email = req.body.email;
   var mailOptions = {
-    from: "Walker ✔ <Walker.Flynn.OBJ@gmail.com>", // sender address
+    from: "Walker.Flynn.OBJ@gmail.com", // sender address
     to: email, // list of receivers
-    subject: "Your Sphere Object ✔", // Subject line
-    text: "Thanks for using my ball generator. If you do make actually build this thing send me a picture at this email address and submit it to Instagram #WalkersBalls.", // plaintext body
+    subject: "Your Sphere Object", // Subject line
+    text: "Thanks for using my ball generator. If you do actually build this thing send me a picture at this email address and submit it to Instagram #WalkersBalls.", // plaintext body
     attachments: [
       {
         fileName: "yourBall.obj",
@@ -58,13 +58,13 @@ app.post('/submit', function(req, res){
   }
   smtpTransport.sendMail(mailOptions, function(error, response){
     if(error){
-        console.log(error);
+      console.log(error);
     }else{
-        console.log("Message sent: " + response.message);
+      console.log("Message sent: " + response.message);
     }
-    res.writehead(200);
-    res.end();
   });
+  res.writeHead(200);
+  res.end();
 });
 
 http.createServer(app).listen(app.get('port'), function(){

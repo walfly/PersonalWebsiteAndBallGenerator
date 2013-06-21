@@ -19,32 +19,24 @@ Ball = function (innerRadius, outerRadius, number) {
   };
 
   var XLine = function(slope, xCoord){
-    this.slope = slope;
-    this.isNeg = false;
     this.axis = 'x';
     this.o = [xCoord, 0, 0]
     this.e = [xCoord, slope[0], slope[1]] 
   };
 
   var XLineNeg = function(slope, zCoord){
-    this.slope = slope;
-    this.isNeg = true;
     this.axis = 'x';
     this.o = [zCoord, 0, 0]
     this.e = [zCoord, -slope[0], slope[1]] 
   };
 
   var YLine = function(slope, yCoord){
-    this.slope = slope;
-    this.isNeg = false;
     this.axis = 'y';
     this.o = [0, yCoord, 0]
     this.e = [slope[0], yCoord, slope[1]] 
   };
 
   var YLineNeg = function(slope, yCoord){
-    this.slope = slope;
-    this.isNeg = true;
     this.axis = 'y';
     this.o = [0, yCoord, 0]
     this.e = [-slope[0], yCoord, slope[1]] 

@@ -82,7 +82,8 @@
               data: obj2,
               success: function(){
                 $email.val('');
-                $('#success').text('your file was sent to' + email);
+                $('#success').text('your file was sent to ' + email);
+                setTimout(function(){$('#success').text("")}, 15000);
               }
             });
           }
