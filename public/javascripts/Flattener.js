@@ -21,12 +21,19 @@ var Flattened = function (geo, y) {
 
   var distance2d = function(p1, p2){
     return Math.sqrt(square(p1[0] - p2[0])+square(p1[1] - p2[1]));
-  }
+  };
 
   var angleFinder = function (d1, d2, v1, v2) {
     var theta = ((v1[0]*v2[0])+(v1[1]*v2[1])+(v1[2]*v2[2]))/(d1*d2);
     var rad = Math.acos(theta);
     return rad;
+  };
+
+  var angleFinder2d = function (d1, d2, v1, v2){
+    var theta = ((v1[0]*v2[0])+(v1[1]*v2[1]))/(d1*d2);
+    var rad = Math.acos(theta);
+    var deg = rad * 180/Math.PI;
+    return deg;
   };
 
   var toVector = function(number) {
@@ -61,8 +68,9 @@ var Flattened = function (geo, y) {
   };
 
   var unitCreate = function(st, en){
+    en = en || [0,0]
     var dis = distance2d(st, en);
-    var dir = [en[0]-st[0], en[1]-st[1]];
+    var dir = [st[0] - en[0], st[1] - en[1]];
     return [dir[0]/dis, dir[1]/dis];
   };
 
@@ -70,33 +78,42 @@ var Flattened = function (geo, y) {
     return [unit[0]*dist, unit[1]*dist];
   };
 
+  var addVector2d = function(v1, v2){
+    return [v1[0] - v2[0], v1[1] - v2[1]];
+  };
+  
+  var newUnit = function(v, angle){
+    return [v[0]*Math.cos(angle) + v[1]*Math.sin(angle), -v[0]*Math.sin(angle) + v[1]*Math.cos(angle)];
+  }
+
   var init = function(geo){
-    var length = geo.length, dist1, dist2, dir1, dir2, angle, unit, prevP, prevx = 0, prevy = 0;
+    var length = geo.length, dist1, dist2, dir1, dir2, angle = 0, unit, prevP, 
+        twoBefore, added, prevV, prevx = 0, prevy = 0;
     self.vertices.push(new THREE.Vector3(prevx, prevy, pl));
-    prevP = [prevx, prevy]
-    console.log('test', angleFinder(Math.sqrt(2), 1, [1,1,0], [0,1,0]));
-    console.log('test', angleFinder(Math.sqrt(2), 1, [1,-1,0], [0,1,0]));
+    twoBefore = [prevx, prevy, pl];
+    prevy = distance3d(geo[0], geo[1])
+    self.vertices.push(new THREE.Vector3(prevx, prevy, pl));
+    prevP = [prevx, prevy, pl];
     for (var i = 2; i < length; i++) {
       dir1 = dirCreate(geo[i-1], geo[i]);
-      console.log(dir1);
       dist1 = vecdistance3d(dir1);
       dir2 = dirCreate(geo[i-1],geo[i-2]);
-      console.log(dir2);
       dist2 = vecdistance3d(dir2);
       angle = angleFinder(dist1, dist2, dir1, dir2);
+      console.log('target angle', angle * 180/Math.PI);
       vector = toVector(angle);
+      prevV = unitCreate(twoBefore, prevP);
+      added =  newUnit(prevV, angle);
+      console.log(added)
       //not calculating relative vector given angle, just angle from primary axis. FIX THIS
-      unit = unitCreate(prevP, vector);
+      unit = added;
+      console.log('angle between old line and new =', angleFinder2d(1, 1, prevV, unit));
       scal = scalarCreate(dist1, unit);
-      if(i%2 !== 0){
-        prevx -= scal[0];
-        prevy -= scal[1];        
-      } else {
-        prevx += scal[0];
-        prevy += scal[1];
-      }
+      prevx += scal[1];
+      prevy += scal[0];
       self.vertices.push(new THREE.Vector3(prevx, prevy, pl));
-      prevP = [prevx, prevy];
+      twoBefore = prevP;
+      prevP = [prevx, prevy, pl];
     }
 		for (var i = 0; i < self.vertices.length - 2; i ++){
       self.faces.push(new THREE.Face3(i, i+1, i+2));
