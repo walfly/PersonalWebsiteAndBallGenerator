@@ -1,6 +1,15 @@
 BallToFlat = function (innerRadius, outerRadius, number) {
    
   var self = this;
+  if(typeof number === 'string'){
+    number = parseInt(number);
+  }
+  if(typeof innerRadius === 'string'){
+    innerRadius = parseInt(innerRadius);
+  }
+  if(typeof outerRadius === 'string'){
+    outerRadius = parseInt(outerRadius);
+  }
 
   var Sphere = function(radius){
     this.c = [0,0,0];
@@ -240,7 +249,6 @@ BallToFlat = function (innerRadius, outerRadius, number) {
   };
 
   var surfaceMaker = function(slope, linetype1, linetype2){
-
     var line1 = linetype1;
     var line2 = linetype2;
     var verts = [];
@@ -254,9 +262,29 @@ BallToFlat = function (innerRadius, outerRadius, number) {
     return verts;
   };
 
+  var Surface = function(slope, linetype1, linetype2){
+    THREE.Geometry.call(this);
+
+    var line1 = linetype1;
+    var line2 = linetype2;
+    var vert1 = sphereIntersectionPts(slope, line1, line2),
+        vert2 = sphereIntersectionPtsInner(slope, line1, line2),
+        i;
+    for(i = 0; i < vert1.length; i ++){
+      this.vertices.push(new THREE.Vector3(vert1[i][0], vert1[i][1], vert1[i][2]));
+      this.vertices.push(new THREE.Vector3(vert2[i][0], vert2[i][1], vert2[i][2]));
+    }
+    for(i = 0; i < this.vertices.length - 2; i ++){
+      this.faces.push(new THREE.Face3(i, i+1, i+2));
+    }
+  };
+  Surface.prototype = Object.create(THREE.Geometry.prototype);
+  Surface.prototype.constructor = Surface;
+
   var sphere = new Sphere(outerRadius);
   var innerSphere = new Sphere(innerRadius);
 
+  this.surfaceV = [];
   this.surfaces = [];
 
   var lineCreate = function(numOf){
@@ -265,10 +293,14 @@ BallToFlat = function (innerRadius, outerRadius, number) {
     angle = angleInc;
     for (var i = 0; i < numOf-2; i ++){
       vector = toVector(Math.tan(angle*Math.PI/180));
-      var surface = surfaceMaker(vector, XLine, XLineNeg);
-      var surface2 = surfaceMaker(vector, XLineNeg, XLine);
-      self.surfaces.push(surface);
-      self.surfaces.push(surface2);
+      surface = surfaceMaker(vector, XLine, XLineNeg);
+      surface2 = surfaceMaker(vector, XLineNeg, XLine);
+      surface3 = new Surface(vector, XLine, XLineNeg);
+      surface4 = new Surface(vector, XLineNeg, XLine);
+      self.surfaceV.push(surface);
+      self.surfaceV.push(surface2);
+      self.surfaces.push(surface3);
+      self.surfaces.push(surface4);
       angle += angleInc;
     }
   }

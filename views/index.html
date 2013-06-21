@@ -20,7 +20,8 @@
       <p>surfaces  <input class='surfacechange' id='surface' type='range' name='surfacenum' min='4' max = '30' value= "11"></p>
       <p>outer radius <input class='surfacechange' id='outer' type='range' name='surfacenum' min='15' max = '105' value= "55"></p>
       <p>inner radius <input class='surfacechange' id='inner' type='range' name='surfacenum' min='10' max = '100' value= "50"></p>
-      <button id="flatten">Flatten</button>
+      <input type = 'text' id='email' placeholder='enter your email here' size = '40'><button id="convert">Get the file!</button>
+      <p id='success'></p>
     </div>
   	<div id="container"></div>
   	<script>
@@ -33,7 +34,7 @@
 
         var cross;
 
-        var ball, col, mat, surface, flatPat;
+        var ball, col, mat, surface, surface2, flatPat;
 
         var $red = $('#red');
         var $green = $('#green');
@@ -41,7 +42,8 @@
         var $surface = $('#surface');
         var $inner = $("#inner");
         var $outer = $("#outer");
-        var $flatten = $("#flatten");
+        var $convert = $("#convert");
+        var $email = $('#email');
 
         var red = $red.val();
         var green = $green.val();
@@ -64,9 +66,50 @@
           render({surface: true})
         });
 
-        $flatten.on('click', function(){
-          render({flatten: true});
+        $convert.on('click', function(){
+          console.log($email.val());
+          if($email.val() === ''){
+            alert('you have to input your email');
+          } else {
+            ball = new Ball(inner, outer, surfaceCount);
+            var obj = THREE.saveGeometryToObj(ball);
+            var email = $email.val();
+            var obj2 = {'obj': obj, 'email': email};
+            $.ajax({
+              url: 'http://localhost:3000/submit',
+              type: 'POST',
+              datatype: 'application/json',
+              data: obj2,
+              success: function(){
+                $email.val('');
+                $('#success').text('your file was sent to' + email);
+              }
+            });
+          }
         });
+
+        THREE.saveGeometryToObj = function (geometry) {
+          var s = '';
+          for (i = 0; i < geometry.vertices.length; i++) {
+              s+= 'v '+(geometry.vertices[i].x) + ' ' +
+              geometry.vertices[i].y + ' '+
+              geometry.vertices[i].z + '\n';
+          }
+
+          for (i = 0; i < geometry.faces.length; i++) {
+
+              s+= 'f '+ (geometry.faces[i].a+1) + ' ' +
+              (geometry.faces[i].b+1) + ' '+
+              (geometry.faces[i].c+1);
+
+              if (geometry.faces[i].d !== undefined) {
+                  s+= ' '+ (geometry.faces[i].d+1);
+              }
+              s+= '\n';
+          }
+
+          return s;
+        };
 
         init();
         animate();
@@ -98,8 +141,6 @@
           //scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
           col = new THREE.Color('rgb('+red+','+green+','+blue+')');
           mat = new THREE.MeshLambertMaterial({color: col, side: THREE.DoubleSide, opacity: 1, transparent: false, wireframe: true});
-          console.log(surfaceCount);
-          console.log(surfaceCount === "11");
           ball = new Ball(inner, outer, surfaceCount);
           surface = new THREE.Mesh(ball, mat);
           console.log(surface);
@@ -177,14 +218,16 @@
             surface = new THREE.Mesh(ball, mat);
             scene.add(surface);
           }
-          if (options.flatten){
-            ball = new BallToFlat(inner, outer, surfaceCount);
-            flatPat = new Flattened(ball.surfaces[2], 0);
-            console.log(flatPat);
-            scene.remove(surface);
-            surface = new THREE.Mesh(flatPat, mat);
-            scene.add(surface);
-          }
+          // if (options.flatten){
+          //   scene.remove(surface);
+          //   ball = new BallToFlat(inner, outer, surfaceCount);
+          //   surface2 = new THREE.Mesh(ball.surfaces[ball.surfaces.length-1], mat);
+          //   scene.add(surface2);
+          //   flatPat = new Flattened(ball.surfaceV[ball.surfaceV.length -1], 0);
+          //   console.log('points', ball.surfaceV[ball.surfaceV.length -1], ball.surfaces[ball.surfaces.length-1])
+          //   surface = new THREE.Mesh(flatPat, mat);
+          //   scene.add(surface);
+          // }
 
           renderer.render( scene, camera );
           stats.update();

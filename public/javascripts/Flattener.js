@@ -103,14 +103,12 @@ var Flattened = function (geo, y) {
       console.log('target angle', angle * 180/Math.PI);
       vector = toVector(angle);
       prevV = unitCreate(twoBefore, prevP);
-      added =  newUnit(prevV, angle);
-      console.log(added)
+      unit =  newUnit(prevV, angle);
       //not calculating relative vector given angle, just angle from primary axis. FIX THIS
-      unit = added;
       console.log('angle between old line and new =', angleFinder2d(1, 1, prevV, unit));
       scal = scalarCreate(dist1, unit);
-      prevx += scal[1];
-      prevy += scal[0];
+      prevx += scal[0];
+      prevy += scal[1];
       self.vertices.push(new THREE.Vector3(prevx, prevy, pl));
       twoBefore = prevP;
       prevP = [prevx, prevy, pl];
