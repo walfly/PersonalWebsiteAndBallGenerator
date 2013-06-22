@@ -8,20 +8,21 @@
     <script src="/javascripts/trackball.js"></script>
     <script src="/javascripts/stats.js"></script>
     <script src="/javascripts/detector.js"></script>
-    <script src="/javascripts/BallToFlatten.js"></script>
-    <script src="/javascripts/Flattener.js"></script>
     <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
   </head>
   <body>
-    <div id='parameters'>
-      <p>red <input class='colorchange' id='red' type='range' name='surfacenum' min='0' max = '255'></p>
-      <p>green <input class='colorchange' id='green' type='range' name='surfacenum' min='0' max = '255'></p>
-      <p>blue <input class='colorchange' id='blue' type='range' name='surfacenum' min='0' max = '255'></p>
-      <p>surfaces  <input class='surfacechange' id='surface' type='range' name='surfacenum' min='3' max = '15' value= "5"></p>
-      <p>outer radius <input class='surfacechange' id='outer' type='range' name='surfacenum' min='15' max = '105' value= "55"></p>
-      <p>Width <input class='surfacechange' id='inner' type='range' name='surfacenum' min='2' max = '50' value= "10"></p>
-      <p>Thickness <input class='surfacechange' id='thick' type='range' name='surfacenum' min='0.5' max = '5' value= ".5" step="0.5"></p>
-      <input type = 'text' id='email' placeholder='enter your email here' size = '40'><button id="convert">Get the file!</button>
+    <div class='parameters'>
+      <p><span class='slider'>red</span><input class='colorchange' id='red' type='range' name='surfacenum' min='0' max = '255'></p>
+      <p><span class='slider'>green</span><input class='colorchange' id='green' type='range' name='surfacenum' min='0' max = '255'></p>
+      <p><span class='slider'>blue</span><input class='colorchange' id='blue' type='range' name='surfacenum' min='0' max = '255'></p>
+      <p><span class='slider'>surfaces</span><input class='surfacechange' id='surface' type='range' name='surfacenum' min='3' max = '15' value= "5"></p>
+      <p><span class='slider'>radius</span><input class='surfacechange' id='outer' type='range' name='surfacenum' min='15' max = '105' value= "55"></p>
+      <p><span class='slider'>width</span><input class='surfacechange' id='inner' type='range' name='surfacenum' min='2' max = '50' value= "10"></p>
+      <p><span class='slider'>thickness</span><input class='surfacechange' id='thick' type='range' name='surfacenum' min='0.5' max = '5' value= '0.5' step="0.5"></p>
+      <input type = 'text' id='email' placeholder='enter your email here' size = '35'>
+      <div>
+        <button id="convert">Get the file!</button>
+      </div>
       <p id='success'></p>
     </div>
   	<div id="container"></div>

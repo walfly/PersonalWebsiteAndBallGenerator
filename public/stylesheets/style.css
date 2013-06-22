@@ -6,7 +6,7 @@ a {
   color: #00B7FF;
 }
 
-#parameters{
+.parameters{
 	position: relative;
 	display: inline;
 	top: 10px;
@@ -16,11 +16,60 @@ a {
 	text-align: right;
 }
 
+.parameters .slider {
+  width: 200px;
+  position: relative;
+  left: 200px;
+  color: white;
+  text-align: center;
+  z-index: 1;
+  top: -5px;
+}
+
 #container{
 	width: 70%;
 	height: 100%;
 }
 
-#parameters input{
+.parameters input{
 	margin-right: 40px;
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+    background-color: silver;
+    z-index: 0;
+    width: 200px;
+    height:20px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+     -webkit-appearance: none;
+    background-color: #666;
+    z-index: 2;
+    opacity: 0.5;
+    width: 10px;
+    height: 26px;
+}
+
+button {
+      display: block;
+      border: 0 none;
+      border-radius: 2px 2px 2px 2px;
+      color: #FFFFFF;
+      cursor: pointer;
+      display: inline-block;
+      font-size: 12px;
+      font-weight: bold;
+      line-height: 20px;
+      margin-bottom: 0;
+      margin-top: 10px;
+      margin-right: 40px;
+      padding: 7px 10px;
+      text-transform: none;
+      transition: all 0.3s ease 0s;
+      -moz-transition: all 0.3s ease 0s;
+      -webkit-transition: all 0.3s ease 0s;
+      width: 200px; /* auto */
+      text-align: center; /* DELETE WHEN WIDTH AUTO */
 }

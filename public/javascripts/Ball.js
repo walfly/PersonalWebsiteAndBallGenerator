@@ -10,7 +10,7 @@ Ball = function (innerRadius, outerRadius, number, thick) {
     outerRadius = parseInt(outerRadius);
   }
   if(typeof thick === 'string'){
-    thick = parseInt(thick);
+    thick = parseFloat(thick);
   }
   var self = this;
   var times = 1;
@@ -246,7 +246,7 @@ Ball = function (innerRadius, outerRadius, number, thick) {
     }
     rapAround2(i, pt1Arr, slope, innerSphere, linetype1);
     return pt1Arr;
-  }
+  };
 
   var sphereIntersectionPts = function(slope, linetype1, linetype2){
     var radius = sphere.r, pt1Arr = [], pt2Arr = [], vert, line, step;
@@ -289,10 +289,6 @@ Ball = function (innerRadius, outerRadius, number, thick) {
         self.vertices.push(vert3[i]);
         self.vertices.push(vert4[i]);
       }
-      self.faces.push(new THREE.Face3(0, 1, 2));
-      self.faces.push(new THREE.Face3(1, 2, 3));
-      add = self.vertices.length -length;
-      add = add/4;
       for(a = length; a < self.vertices.length-7; a += 4){
         self.faces.push(new THREE.Face3(a+1, a, a+5));
         self.faces.push(new THREE.Face3(a+5, a+1, a+3));
@@ -303,9 +299,17 @@ Ball = function (innerRadius, outerRadius, number, thick) {
         self.faces.push(new THREE.Face3(a, a+6, a+4));
         self.faces.push(new THREE.Face3(a, a+5, a+4));
       }
+      self.faces.push(new THREE.Face3(a+1, a, length + 1));
+      self.faces.push(new THREE.Face3(length +1, a+1, a+3));
+      self.faces.push(new THREE.Face3(a+3, length + 1, length + 3));
+      self.faces.push(new THREE.Face3(length + 2, a+3, a+2));
+      self.faces.push(new THREE.Face3(a+2, length + 3, length + 2));
+      self.faces.push(new THREE.Face3(length + 2, a+2, a));
+      self.faces.push(new THREE.Face3(a, length + 2, length + 0));
+      self.faces.push(new THREE.Face3(a, length + 1, length + 0));
     };
     init(slope);
-  }
+  };
 
   var FlatRing = function (axis){
     
@@ -335,8 +339,6 @@ Ball = function (innerRadius, outerRadius, number, thick) {
         self.vertices.push(new THREE.Vector3(-thick/2, x2, y2));
       }
     }
-    add = self.vertices.length - length;
-    add = add/4
     for(a = length; a < self.vertices.length-7; a +=4){
       self.faces.push(new THREE.Face3(a+1, a, a+5));
       self.faces.push(new THREE.Face3(a+5, a+1, a+3));
@@ -347,7 +349,15 @@ Ball = function (innerRadius, outerRadius, number, thick) {
       self.faces.push(new THREE.Face3(a, a+6, a+4));
       self.faces.push(new THREE.Face3(a, a+5, a+4));
     }
-  }
+    self.faces.push(new THREE.Face3(a+1, a, length + 1));
+    self.faces.push(new THREE.Face3(length +1, a+1, a+3));
+    self.faces.push(new THREE.Face3(a+3, length + 1, length + 3));
+    self.faces.push(new THREE.Face3(length + 2, a+3, a+2));
+    self.faces.push(new THREE.Face3(a+2, length + 3, length + 2));
+    self.faces.push(new THREE.Face3(length + 2, a+2, a));
+    self.faces.push(new THREE.Face3(a, length + 2, length + 0));
+    self.faces.push(new THREE.Face3(a, length + 1, length + 0));
+  };
 
   var sphere = new Sphere(outerRadius);
   var innerSphere = new Sphere(innerRadius);

@@ -47,8 +47,8 @@ app.post('/submit', function(req, res){
   var mailOptions = {
     from: "Walker.Flynn.OBJ@gmail.com", // sender address
     to: email, // list of receivers
-    subject: "Your Sphere Object", // Subject line
-    text: "Thanks for using my ball generator. If you do actually build this thing send me a picture at this email address and submit it to Instagram #WalkersBalls.", // plaintext body
+    subject: "Your Ball Object", // Subject line
+    text: "Thanks for using my ball generator. If you do actually build this thing send me a picture at this email address and submit it to Instagram #FlynnBall.", // plaintext body
     attachments: [
       {
         fileName: "yourBall.obj",
