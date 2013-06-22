@@ -22,50 +22,50 @@ Ball = function (innerRadius, outerRadius, number, thick) {
 
   var XLine = function(slope, xCoord){
     this.axis = 'x';
-    this.o = [xCoord, 0, 0];
-    this.e = [xCoord, slope[0], slope[1]];
+    this.o = [xCoord, thick/2, 0];
+    this.e = [xCoord, slope[0] + thick/2, slope[1]];
   };
 
   var XLineLow = function(slope, xCoord){
     this.axis = 'x';
-    this.o = [xCoord, -thick, 0];
-    this.e = [xCoord, slope[0]-thick, slope[1]-thick]; 
+    this.o = [xCoord, -thick/2, 0];
+    this.e = [xCoord, slope[0]-thick/2, slope[1]-thick]; 
   };
 
   var XLineNeg = function(slope, zCoord){
     this.axis = 'x';
-    this.o = [zCoord, 0, 0];
-    this.e = [zCoord, -slope[0], slope[1]];
+    this.o = [zCoord, thick/2, 0];
+    this.e = [zCoord, -slope[0] + thick/2, slope[1]];
   };
 
   var XLineNegLow = function(slope, zCoord){
     this.axis = 'x';
-    this.o = [zCoord, -thick, 0];
-    this.e = [zCoord, -slope[0] - thick, slope[1]];
+    this.o = [zCoord, -thick/2, 0];
+    this.e = [zCoord, -slope[0] - thick/2, slope[1]];
   };
 
   var YLine = function(slope, yCoord){
     this.axis = 'y';
-    this.o = [0, yCoord, 0];
-    this.e = [slope[0], yCoord, slope[1]];
+    this.o = [thick/2, yCoord, 0];
+    this.e = [slope[0] + thick/2, yCoord, slope[1]];
   };
 
   var YLineLow = function(slope, yCoord){
     this.axis = 'y';
-    this.o = [-thick, yCoord, 0];
-    this.e = [slope[0] - thick, yCoord, slope[1]];
+    this.o = [-thick/2, yCoord, 0];
+    this.e = [slope[0] - thick/2, yCoord, slope[1]];
   };
 
   var YLineNeg = function(slope, yCoord){
     this.axis = 'y';
-    this.o = [0, yCoord, 0];
-    this.e = [-slope[0], yCoord, slope[1]];
+    this.o = [thick/2, yCoord, 0];
+    this.e = [-slope[0] + thick/2, yCoord, slope[1]];
   };
 
   var YLineNegLow = function(slope, yCoord){
     this.axis = 'y';
-    this.o = [-thick, yCoord, 0];
-    this.e = [-slope[0] - thick, yCoord, slope[1]];
+    this.o = [-thick/2, yCoord, 0];
+    this.e = [-slope[0] - thick/2, yCoord, slope[1]];
   };
 
   var toVector = function(number) {
@@ -324,15 +324,15 @@ Ball = function (innerRadius, outerRadius, number, thick) {
       x2 = inRad * Math.cos(rad * twoPi);
       y2 = inRad * Math.sin(rad * twoPi);
       if(axis === 'x'){
-        self.vertices.push(new THREE.Vector3(x1, 0, y1));
-        self.vertices.push(new THREE.Vector3(x2, 0, y2));
-        self.vertices.push(new THREE.Vector3(x1, -thick, y1));
-        self.vertices.push(new THREE.Vector3(x2, -thick, y2));
+        self.vertices.push(new THREE.Vector3(x1, thick/2, y1));
+        self.vertices.push(new THREE.Vector3(x2, thick/2, y2));
+        self.vertices.push(new THREE.Vector3(x1, -thick/2, y1));
+        self.vertices.push(new THREE.Vector3(x2, -thick/2, y2));
       } else if (axis === 'y'){
-        self.vertices.push(new THREE.Vector3(0, x1, y1));
-        self.vertices.push(new THREE.Vector3(0, x2, y2));
-        self.vertices.push(new THREE.Vector3(-thick, x1, y1));
-        self.vertices.push(new THREE.Vector3(-thick, x2, y2));
+        self.vertices.push(new THREE.Vector3(thick/2, x1, y1));
+        self.vertices.push(new THREE.Vector3(thick/2, x2, y2));
+        self.vertices.push(new THREE.Vector3(-thick/2, x1, y1));
+        self.vertices.push(new THREE.Vector3(-thick/2, x2, y2));
       }
     }
     add = self.vertices.length - length;
@@ -358,7 +358,7 @@ Ball = function (innerRadius, outerRadius, number, thick) {
     angle = angleInc;
     for (var i = 0; i < numOf-2; i ++){
       vector = toVector(Math.tan(angle*Math.PI/180));
-      Surface(vector, XLine, XLineNeg, XLineLow, XLineNeg);
+      Surface(vector, XLine, XLineNeg, XLineLow, XLineNegLow);
       Surface(vector, XLineNeg, XLine, XLineNegLow, XLineLow);
       Surface(vector, YLine, YLineNeg, YLineLow, YLineNegLow);
       Surface(vector, YLineNeg, YLine, YLineNegLow, YLineLow);

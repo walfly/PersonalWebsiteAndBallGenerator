@@ -20,7 +20,7 @@
       <p>surfaces  <input class='surfacechange' id='surface' type='range' name='surfacenum' min='3' max = '15' value= "5"></p>
       <p>outer radius <input class='surfacechange' id='outer' type='range' name='surfacenum' min='15' max = '105' value= "55"></p>
       <p>Width <input class='surfacechange' id='inner' type='range' name='surfacenum' min='2' max = '50' value= "10"></p>
-      <p>Thickness <input class='surfacechange' id='thick' type='range' name='surfacenum' min='1' max = '5' value= "1"></p>
+      <p>Thickness <input class='surfacechange' id='thick' type='range' name='surfacenum' min='0.5' max = '5' value= ".5" step="0.5"></p>
       <input type = 'text' id='email' placeholder='enter your email here' size = '40'><button id="convert">Get the file!</button>
       <p id='success'></p>
     </div>
@@ -66,10 +66,9 @@
           surfaceCount = $surface.val();
           outer = $outer.val();
           inner = parseInt($outer.val()) - parseInt($inner.val());
-          if(inner === 0){
+          thick = $thick.val();
+          if(inner <= 0){
             inner = 2;
-          } else if (inner < 0){
-            inner = math.abs(inner);
           }
           render({surface: true})
         });
@@ -227,17 +226,6 @@
             surface = new THREE.Mesh(ball, mat);
             scene.add(surface);
           }
-          // if (options.flatten){
-          //   scene.remove(surface);
-          //   ball = new BallToFlat(inner, outer, surfaceCount);
-          //   surface2 = new THREE.Mesh(ball.surfaces[ball.surfaces.length-1], mat);
-          //   scene.add(surface2);
-          //   flatPat = new Flattened(ball.surfaceV[ball.surfaceV.length -1], 0);
-          //   console.log('points', ball.surfaceV[ball.surfaceV.length -1], ball.surfaces[ball.surfaces.length-1])
-          //   surface = new THREE.Mesh(flatPat, mat);
-          //   scene.add(surface);
-          // }
-
           renderer.render( scene, camera );
           stats.update();
 
