@@ -17,9 +17,10 @@
       <p>red <input class='colorchange' id='red' type='range' name='surfacenum' min='0' max = '255'></p>
       <p>green <input class='colorchange' id='green' type='range' name='surfacenum' min='0' max = '255'></p>
       <p>blue <input class='colorchange' id='blue' type='range' name='surfacenum' min='0' max = '255'></p>
-      <p>surfaces  <input class='surfacechange' id='surface' type='range' name='surfacenum' min='4' max = '30' value= "11"></p>
+      <p>surfaces  <input class='surfacechange' id='surface' type='range' name='surfacenum' min='3' max = '15' value= "5"></p>
       <p>outer radius <input class='surfacechange' id='outer' type='range' name='surfacenum' min='15' max = '105' value= "55"></p>
-      <p>inner radius <input class='surfacechange' id='inner' type='range' name='surfacenum' min='10' max = '100' value= "50"></p>
+      <p>Width <input class='surfacechange' id='inner' type='range' name='surfacenum' min='2' max = '50' value= "10"></p>
+      <p>Thickness <input class='surfacechange' id='thick' type='range' name='surfacenum' min='1' max = '5' value= "1"></p>
       <input type = 'text' id='email' placeholder='enter your email here' size = '40'><button id="convert">Get the file!</button>
       <p id='success'></p>
     </div>
@@ -44,13 +45,15 @@
         var $outer = $("#outer");
         var $convert = $("#convert");
         var $email = $('#email');
+        var $thick = $('#thick');
 
         var red = $red.val();
         var green = $green.val();
         var blue = $blue.val();
-        var outer = $outer.val();
-        var inner = $inner.val();
+        var outer = parseInt($outer.val());
+        var inner = parseInt($outer.val()) - parseInt($inner.val());
         var surfaceCount = $surface.val();
+        var thick = $thick.val();
 
         $('.colorchange').on('change', function(){
           green = $green.val();
@@ -62,7 +65,12 @@
         $('.surfacechange').on('mouseup', function(){
           surfaceCount = $surface.val();
           outer = $outer.val();
-          inner = $inner.val();
+          inner = parseInt($outer.val()) - parseInt($inner.val());
+          if(inner === 0){
+            inner = 2;
+          } else if (inner < 0){
+            inner = math.abs(inner);
+          }
           render({surface: true})
         });
 
@@ -71,7 +79,7 @@
           if($email.val() === ''){
             alert('you have to input your email');
           } else {
-            ball = new Ball(inner, outer, surfaceCount);
+            ball = new Ball(inner, outer, surfaceCount, thick);
             var obj = THREE.saveGeometryToObj(ball);
             var email = $email.val();
             var obj2 = {'obj': obj, 'email': email};
@@ -141,8 +149,8 @@
           scene = new THREE.Scene();
           //scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
           col = new THREE.Color('rgb('+red+','+green+','+blue+')');
-          mat = new THREE.MeshLambertMaterial({color: col, side: THREE.DoubleSide, opacity: 1, transparent: false, wireframe: true});
-          ball = new Ball(inner, outer, surfaceCount);
+          mat = new THREE.MeshLambertMaterial({color: col, side: THREE.DoubleSide, opacity: 1, transparent: false, wireframe: false});
+          ball = new Ball(inner, outer, surfaceCount, thick);
           surface = new THREE.Mesh(ball, mat);
           console.log(surface);
           scene.add(surface);
@@ -214,7 +222,7 @@
             surface.material.needsUpdate = true;
           }
           if (options.surface){
-            ball = new Ball(inner, outer, surfaceCount);
+            ball = new Ball(inner, outer, surfaceCount, thick);
             scene.remove(surface);
             surface = new THREE.Mesh(ball, mat);
             scene.add(surface);

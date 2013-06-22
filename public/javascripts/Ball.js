@@ -1,5 +1,4 @@
-Ball = function (innerRadius, outerRadius, number) {
- 
+Ball = function (innerRadius, outerRadius, number, thick) {
   THREE.Geometry.call(this);
   if(typeof number === 'string'){
     number = parseInt(number);
@@ -10,8 +9,11 @@ Ball = function (innerRadius, outerRadius, number) {
   if(typeof outerRadius === 'string'){
     outerRadius = parseInt(outerRadius);
   }
-
+  if(typeof thick === 'string'){
+    thick = parseInt(thick);
+  }
   var self = this;
+  var times = 1;
   
   var Sphere = function(radius){
     this.c = [0,0,0];
@@ -20,26 +22,50 @@ Ball = function (innerRadius, outerRadius, number) {
 
   var XLine = function(slope, xCoord){
     this.axis = 'x';
-    this.o = [xCoord, 0, 0]
-    this.e = [xCoord, slope[0], slope[1]] 
+    this.o = [xCoord, 0, 0];
+    this.e = [xCoord, slope[0], slope[1]];
+  };
+
+  var XLineLow = function(slope, xCoord){
+    this.axis = 'x';
+    this.o = [xCoord, -thick, 0];
+    this.e = [xCoord, slope[0]-thick, slope[1]-thick]; 
   };
 
   var XLineNeg = function(slope, zCoord){
     this.axis = 'x';
-    this.o = [zCoord, 0, 0]
-    this.e = [zCoord, -slope[0], slope[1]] 
+    this.o = [zCoord, 0, 0];
+    this.e = [zCoord, -slope[0], slope[1]];
+  };
+
+  var XLineNegLow = function(slope, zCoord){
+    this.axis = 'x';
+    this.o = [zCoord, -thick, 0];
+    this.e = [zCoord, -slope[0] - thick, slope[1]];
   };
 
   var YLine = function(slope, yCoord){
     this.axis = 'y';
-    this.o = [0, yCoord, 0]
-    this.e = [slope[0], yCoord, slope[1]] 
+    this.o = [0, yCoord, 0];
+    this.e = [slope[0], yCoord, slope[1]];
+  };
+
+  var YLineLow = function(slope, yCoord){
+    this.axis = 'y';
+    this.o = [-thick, yCoord, 0];
+    this.e = [slope[0] - thick, yCoord, slope[1]];
   };
 
   var YLineNeg = function(slope, yCoord){
     this.axis = 'y';
-    this.o = [0, yCoord, 0]
-    this.e = [-slope[0], yCoord, slope[1]] 
+    this.o = [0, yCoord, 0];
+    this.e = [-slope[0], yCoord, slope[1]];
+  };
+
+  var YLineNegLow = function(slope, yCoord){
+    this.axis = 'y';
+    this.o = [-thick, yCoord, 0];
+    this.e = [-slope[0] - thick, yCoord, slope[1]];
   };
 
   var toVector = function(number) {
@@ -205,7 +231,8 @@ Ball = function (innerRadius, outerRadius, number) {
 
   var sphereIntersectionPtsInner = function (slope, linetype1, linetype2){
     var radius = innerSphere.r, pt1Arr = [], pt2Arr = [], vert, line, step;
-    step = (radius*7/15)/100
+    step = (radius*7/15)/100;
+    //console.log(times++, step);
     for (var i = -(radius*7/15); i < radius*7/15; i += step){
       line = new linetype1 (slope, i);
       vert = sphereInterPos(line.o, line.e, sphere.c, innerSphere.r);
@@ -220,9 +247,11 @@ Ball = function (innerRadius, outerRadius, number) {
     rapAround2(i, pt1Arr, slope, innerSphere, linetype1);
     return pt1Arr;
   }
+
   var sphereIntersectionPts = function(slope, linetype1, linetype2){
     var radius = sphere.r, pt1Arr = [], pt2Arr = [], vert, line, step;
     step = (radius*7/15)/100;
+    //console.log(times, step);
     for (var i = -(radius*7/15); i < radius*7/15; i += step){
       line = new linetype1 (slope, i);
       vert = sphereInterPos(line.o, line.e, sphere.c, sphere.r);
@@ -238,37 +267,55 @@ Ball = function (innerRadius, outerRadius, number) {
     return pt1Arr;
   };
 
-  var Surface = function(slope, linetype1, linetype2){
+  var Surface = function(slope, linetype1, linetype2, linetype3, linetype4){
 
     var line1 = linetype1;
-    var line2 = linetype2
+    var line2 = linetype2;
+    var line3 = linetype3;
+    var line4 = linetype4;
 
 
     var init = function (slope){
       var vert1 = sphereIntersectionPts(slope, line1, line2),
           vert2 = sphereIntersectionPtsInner(slope, line1, line2),
+          vert3 = sphereIntersectionPts(slope, line3, line4),
+          vert4 = sphereIntersectionPtsInner(slope, line3, line4),
           length = self.vertices.length,
+          add, a,
           i;
       for(i = 0; i < vert1.length; i ++){
         self.vertices.push(vert1[i]);
         self.vertices.push(vert2[i]);
+        self.vertices.push(vert3[i]);
+        self.vertices.push(vert4[i]);
       }
-      for(i = length; i < self.vertices.length-2; i ++){
-        self.faces.push(new THREE.Face3(i, i+1, i+2));
+      self.faces.push(new THREE.Face3(0, 1, 2));
+      self.faces.push(new THREE.Face3(1, 2, 3));
+      add = self.vertices.length -length;
+      add = add/4;
+      for(a = length; a < self.vertices.length-7; a += 4){
+        self.faces.push(new THREE.Face3(a+1, a, a+5));
+        self.faces.push(new THREE.Face3(a+5, a+1, a+3));
+        self.faces.push(new THREE.Face3(a+3, a+5, a+7));
+        self.faces.push(new THREE.Face3(a+7, a+3, a+2));
+        self.faces.push(new THREE.Face3(a+2, a+7, a+6));
+        self.faces.push(new THREE.Face3(a+6, a+2, a));
+        self.faces.push(new THREE.Face3(a, a+6, a+4));
+        self.faces.push(new THREE.Face3(a, a+5, a+4));
       }
     };
     init(slope);
   }
-  
 
   var FlatRing = function (axis){
     
     var twoPi = Math.PI * 2,
-        i,
+        i, a,
         outRad = sphere.r,
         inRad = innerSphere.r,
-        ver = 100,
         length = self.vertices.length,
+        add,
+        ver = 100,
         x1, y1, x2, y2;
     for(i = 0; i <= ver; i ++){
       rad = i/ver;
@@ -279,39 +326,51 @@ Ball = function (innerRadius, outerRadius, number) {
       if(axis === 'x'){
         self.vertices.push(new THREE.Vector3(x1, 0, y1));
         self.vertices.push(new THREE.Vector3(x2, 0, y2));
+        self.vertices.push(new THREE.Vector3(x1, -thick, y1));
+        self.vertices.push(new THREE.Vector3(x2, -thick, y2));
       } else if (axis === 'y'){
         self.vertices.push(new THREE.Vector3(0, x1, y1));
         self.vertices.push(new THREE.Vector3(0, x2, y2));
+        self.vertices.push(new THREE.Vector3(-thick, x1, y1));
+        self.vertices.push(new THREE.Vector3(-thick, x2, y2));
       }
     }
-    for(i = length; i < self.vertices.length - 2; i ++){
-      self.faces.push(new THREE.Face3(i, i+1, i+2));
+    add = self.vertices.length - length;
+    add = add/4
+    for(a = length; a < self.vertices.length-7; a +=4){
+      self.faces.push(new THREE.Face3(a+1, a, a+5));
+      self.faces.push(new THREE.Face3(a+5, a+1, a+3));
+      self.faces.push(new THREE.Face3(a+3, a+5, a+7));
+      self.faces.push(new THREE.Face3(a+7, a+3, a+2));
+      self.faces.push(new THREE.Face3(a+2, a+7, a+6));
+      self.faces.push(new THREE.Face3(a+6, a+2, a));
+      self.faces.push(new THREE.Face3(a, a+6, a+4));
+      self.faces.push(new THREE.Face3(a, a+5, a+4));
     }
   }
-
 
   var sphere = new Sphere(outerRadius);
   var innerSphere = new Sphere(innerRadius);
 
   var lineCreate = function(numOf){
     var line, line2, line3, line4, surface, surface2, surface3, surface4, vector, angle,
-    angleInc = 75/(numOf + 1);
+    angleInc = 70/(numOf + 1);
     angle = angleInc;
     for (var i = 0; i < numOf-2; i ++){
       vector = toVector(Math.tan(angle*Math.PI/180));
-      Surface(vector, XLine, XLineNeg);
-      Surface(vector, XLineNeg, XLine);
-      Surface(vector, YLine, YLineNeg);     
-      Surface(vector, YLineNeg, YLine);
+      Surface(vector, XLine, XLineNeg, XLineLow, XLineNeg);
+      Surface(vector, XLineNeg, XLine, XLineNegLow, XLineLow);
+      Surface(vector, YLine, YLineNeg, YLineLow, YLineNegLow);
+      Surface(vector, YLineNeg, YLine, YLineNegLow, YLineLow);
       angle += angleInc;
     }
     FlatRing('x');
     FlatRing('y');
-  }
+  };
 
   lineCreate(number);
   this.computeCentroids();
   this.computeFaceNormals();
-}
+};
 Ball.prototype = Object.create(THREE.Geometry.prototype);
 Ball.prototype.constructor = Ball;
