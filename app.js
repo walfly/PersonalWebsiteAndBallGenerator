@@ -3,14 +3,15 @@
  * Module dependencies.
  */
 
-var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
-  , submit = require('./routes/submit')
-  , http = require('http')
-  , path = require('path')
-  , fs = require('fs')
-  , nodemailer = require("nodemailer");
+var express = require('express'),
+    routes = require('./routes'),
+    ball = require('./routes/ball.js'),
+    submit = require('./routes/submit.js'),
+    about = require('./routes/about.js'),
+    http = require('http'),
+    path = require('path'),
+    fs = require('fs'),
+    nodemailer = require("nodemailer");
 
 var app = express();
 var n = 0;
@@ -40,7 +41,8 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/users', user.list);
+app.get('/webGL', ball.generator);
+app.get('/aboutMe', about)
 app.post('/submit', function(req, res){
   var geo = req.body.obj;
   var email = req.body.email;

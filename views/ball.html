@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<script src="/javascripts/underscore.js"></script>
+    <script src="/javascripts/jquery.js"></script>
+  	<script src="/javascripts/three.min.js"></script>
+    <script src="/javascripts/Ball.js"></script>
+    <script src="/javascripts/trackball.js"></script>
+    <script src="/javascripts/stats.js"></script>
+    <script src="/javascripts/detector.js"></script>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+  </head>
+  <body>
+    <div class='parameters'>
+      <p><span class='slider'>red</span><input class='colorchange' id='red' type='range' name='surfacenum' min='0' max = '255'></p>
+      <p><span class='slider'>green</span><input class='colorchange' id='green' type='range' name='surfacenum' min='0' max = '255'></p>
+      <p><span class='slider'>blue</span><input class='colorchange' id='blue' type='range' name='surfacenum' min='0' max = '255'></p>
+      <p><span class='slider'>surfaces</span><input class='surfacechange' id='surface' type='range' name='surfacenum' min='3' max = '15' value= "5"></p>
+      <p><span class='slider'>radius</span><input class='surfacechange' id='outer' type='range' name='surfacenum' min='15' max = '105' value= "55"></p>
+      <p><span class='slider'>width</span><input class='surfacechange' id='inner' type='range' name='surfacenum' min='2' max = '50' value= "10"></p>
+      <p><span class='slider'>thickness</span><input class='surfacechange' id='thick' type='range' name='surfacenum' min='0.5' max = '5' value= '0.5' step="0.5"></p>
+      <input type = 'text' id='email' placeholder='enter your email here' size = '35'>
+      <div>
+        <button id="convert">Get the file!</button>
+      </div>
+      <p id='success'></p>
+    </div>
+  	<div id="container"></div>
+  	<script>
+      $(document).ready(function(){
+        if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+
+        var container, stats;
+
+        var camera, controls, scene, renderer;
+
+        var cross;
+
+        var ball, col, mat, surface, surface2, flatPat;
+
+        var $red = $('#red');
+        var $green = $('#green');
+        var $blue = $('#blue');
+        var $surface = $('#surface');
+        var $inner = $("#inner");
+        var $outer = $("#outer");
+        var $convert = $("#convert");
+        var $email = $('#email');
+        var $thick = $('#thick');
+
+        var red = $red.val();
+        var green = $green.val();
+        var blue = $blue.val();
+        var outer = parseInt($outer.val());
+        var inner = parseInt($outer.val()) - parseInt($inner.val());
+        var surfaceCount = $surface.val();
+        var thick = $thick.val();
+
+        $('.colorchange').on('change', function(){
+          green = $green.val();
+          red = $red.val();
+          blue = $blue.val();
+          render({color: true});
+        });
+
+        $('.surfacechange').on('mouseup', function(){
+          surfaceCount = $surface.val();
+          outer = $outer.val();
+          inner = parseInt($outer.val()) - parseInt($inner.val());
+          thick = $thick.val();
+          if(inner <= 0){
+            inner = 2;
+          }
+          render({surface: true})
+        });
+
+        $convert.on('click', function(){
+          console.log($email.val());
+          if($email.val() === ''){
+            alert('you have to input your email');
+          } else {
+            ball = new Ball(inner, outer, surfaceCount, thick);
+            var obj = THREE.saveGeometryToObj(ball);
+            var email = $email.val();
+            var obj2 = {'obj': obj, 'email': email};
+            $.ajax({
+              url: '/submit',
+              type: 'POST',
+              datatype: 'application/json',
+              data: obj2,
+              success: function(){
+                $email.val('');
+                $('#success').text('your file was sent to ' + email);
+                setTimeout(function(){$('#success').text("");}, 15000);
+              }
+            });
+          }
+        });
+
+        THREE.saveGeometryToObj = function (geometry) {
+          var s = '';
+          for (i = 0; i < geometry.vertices.length; i++) {
+              s+= 'v '+(geometry.vertices[i].x) + ' ' +
+              geometry.vertices[i].y + ' '+
+              geometry.vertices[i].z + '\n';
+          }
+
+          for (i = 0; i < geometry.faces.length; i++) {
+
+              s+= 'f '+ (geometry.faces[i].a+1) + ' ' +
+              (geometry.faces[i].b+1) + ' '+
+              (geometry.faces[i].c+1);
+
+              if (geometry.faces[i].d !== undefined) {
+                  s+= ' '+ (geometry.faces[i].d+1);
+              }
+              s+= '\n';
+          }
+
+          return s;
+        };
+
+        init();
+        animate();
+
+        function init() {
+
+          camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
+          camera.position.z = 150;
+
+          controls = new THREE.TrackballControls( camera , document.getElementById('container'));
+
+          controls.rotateSpeed = 1.0;
+          controls.zoomSpeed = 1.2;
+          controls.panSpeed = 0.8;
+
+          controls.noZoom = false;
+          controls.noPan = false;
+
+          controls.staticMoving = true;
+          controls.dynamicDampingFactor = 0.3;
+
+          controls.keys = [ 65, 83, 68 ];
+
+          controls.addEventListener( 'change', render );
+
+          // world
+
+          scene = new THREE.Scene();
+          col = new THREE.Color('rgb('+red+','+green+','+blue+')');
+          mat = new THREE.MeshLambertMaterial({color: col, side: THREE.DoubleSide, opacity: 1, transparent: false, wireframe: true});
+          ball = new Ball(inner, outer, surfaceCount, thick);
+          surface = new THREE.Mesh(ball, mat);
+          console.log(surface);
+          scene.add(surface);
+
+          // lights
+
+          light = new THREE.PointLight( 0xffffff );
+          light.position.set( 70, 70, 70 );
+          scene.add( light );
+
+          light = new THREE.DirectionalLight( 0xffffff);
+          light.position.set( -70, -70, -70 );
+          scene.add( light );
+
+          light = new THREE.AmbientLight( 0x222222 );
+          scene.add( light );
+
+
+          // renderer
+
+          renderer = new THREE.WebGLRenderer( { antialias: false } );
+          renderer.setSize( window.innerWidth, window.innerHeight );
+
+          container = document.getElementById( 'container' );
+          container.appendChild( renderer.domElement );
+
+          stats = new Stats();
+          stats.domElement.style.position = 'absolute';
+          stats.domElement.style.top = '0px';
+          stats.domElement.style.zIndex = 100;
+          container.appendChild( stats.domElement );
+
+          //
+
+          window.addEventListener( 'resize', onWindowResize, false );
+
+        }
+
+        function onWindowResize() {
+
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+
+          renderer.setSize( window.innerWidth, window.innerHeight );
+
+          controls.handleResize();
+
+          render();
+
+        }
+
+        function animate() {
+
+          requestAnimationFrame( animate );
+          controls.update();
+          render();
+
+        }
+
+        function render(options) {
+          options = options || {};
+          options.color = options.color || false;
+          options.surface = options.surface || false;
+          options.flatten = options.flatten || false;
+          if (options.color){
+            col = new THREE.Color('rgb('+red+','+green+','+blue+')');
+            surface.material.color = col;
+            surface.material.needsUpdate = true;
+          }
+          if (options.surface){
+            ball = new Ball(inner, outer, surfaceCount, thick);
+            scene.remove(surface);
+            surface = new THREE.Mesh(ball, mat);
+            scene.add(surface);
+          }
+          renderer.render( scene, camera );
+          stats.update();
+
+        }
+      });
+
+
+    </script>
+  </body>
+</html>

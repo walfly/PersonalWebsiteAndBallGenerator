@@ -13,8 +13,7 @@ Ball = function (innerRadius, outerRadius, number, thick) {
     thick = parseFloat(thick);
   }
   var self = this;
-  var times = 1;
-  
+  //mathmatical geometry classes
   var Sphere = function(radius){
     this.c = [0,0,0];
     this.r = radius;
@@ -67,7 +66,7 @@ Ball = function (innerRadius, outerRadius, number, thick) {
     this.o = [-thick/2, yCoord, 0];
     this.e = [-slope[0] - thick/2, yCoord, slope[1]];
   };
-
+//converts radians to 2d vectors. should find  better way
   var toVector = function(number) {
     var stringy = number.toString();
     var stringArr = stringy.split('.');
@@ -98,7 +97,7 @@ Ball = function (innerRadius, outerRadius, number, thick) {
   var square = function(f){
     return f * f;
   }
-
+  //the two functions below calculate the the vertices
   var sphereInterPos = function( l1, l2, sp, r){
     var p1, p2, mu;
     var a = square(l2[0] - l1[0]) + square(l2[1] - l1[1]) + square(l2[2] - l1[2]);
@@ -172,7 +171,7 @@ Ball = function (innerRadius, outerRadius, number, thick) {
     }
     return p2;
   };
-
+//these two function rotate the line for calculating the vertice to connect the pieces together
   var rapAround1 = function (start, array, slope, rad, linetype){
     var line, rad, step, i, vector, vert, angle, unit;
     step =  0.0174532925;
@@ -228,11 +227,10 @@ Ball = function (innerRadius, outerRadius, number, thick) {
     }
     return array;
   };
-
+//two below iterate along the a given axis and calcuate verts,
   var sphereIntersectionPtsInner = function (slope, linetype1, linetype2){
     var radius = innerSphere.r, pt1Arr = [], pt2Arr = [], vert, line, step;
     step = (radius*7/15)/100;
-    //console.log(times++, step);
     for (var i = -(radius*7/15); i < radius*7/15; i += step){
       line = new linetype1 (slope, i);
       vert = sphereInterPos(line.o, line.e, sphere.c, innerSphere.r);
@@ -251,7 +249,6 @@ Ball = function (innerRadius, outerRadius, number, thick) {
   var sphereIntersectionPts = function(slope, linetype1, linetype2){
     var radius = sphere.r, pt1Arr = [], pt2Arr = [], vert, line, step;
     step = (radius*7/15)/100;
-    //console.log(times, step);
     for (var i = -(radius*7/15); i < radius*7/15; i += step){
       line = new linetype1 (slope, i);
       vert = sphereInterPos(line.o, line.e, sphere.c, sphere.r);
@@ -266,7 +263,7 @@ Ball = function (innerRadius, outerRadius, number, thick) {
     rapAround2(i, pt1Arr, slope, sphere, linetype1);
     return pt1Arr;
   };
-
+//main surface class
   var Surface = function(slope, linetype1, linetype2, linetype3, linetype4){
 
     var line1 = linetype1;
@@ -310,7 +307,7 @@ Ball = function (innerRadius, outerRadius, number, thick) {
     };
     init(slope);
   };
-
+//class for axial pieces
   var FlatRing = function (axis){
     
     var twoPi = Math.PI * 2,
@@ -319,7 +316,7 @@ Ball = function (innerRadius, outerRadius, number, thick) {
         inRad = innerSphere.r,
         length = self.vertices.length,
         add,
-        ver = 100,
+        ver = 500,
         x1, y1, x2, y2;
     for(i = 0; i <= ver; i ++){
       rad = i/ver;
@@ -362,9 +359,9 @@ Ball = function (innerRadius, outerRadius, number, thick) {
   var sphere = new Sphere(outerRadius);
   var innerSphere = new Sphere(innerRadius);
 
-  var lineCreate = function(numOf){
+  var init = function(numOf){
     var line, line2, line3, line4, surface, surface2, surface3, surface4, vector, angle,
-    angleInc = 70/(numOf + 1);
+    angleInc = 75/(numOf + 1);
     angle = angleInc;
     for (var i = 0; i < numOf-2; i ++){
       vector = toVector(Math.tan(angle*Math.PI/180));
@@ -378,7 +375,7 @@ Ball = function (innerRadius, outerRadius, number, thick) {
     FlatRing('y');
   };
 
-  lineCreate(number);
+  init(number);
   this.computeCentroids();
   this.computeFaceNormals();
 };

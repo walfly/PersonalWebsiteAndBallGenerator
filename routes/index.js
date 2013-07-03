@@ -4,6 +4,6 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Ball Generator' });
+  res.render('index', { title: 'Walker Flynn' });
 };
 

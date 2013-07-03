@@ -1,9 +1,94 @@
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px Helvetica, Arial, sans-serif;
 }
 
 a {
-  color: #00B7FF;
+  color: whitesmoke;
+  text-decoration: none;
+}
+
+.centerdiv{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 500px;
+  width: 500px;
+  margin-left: -250px;
+  margin-top: -200px;
+}
+
+.link {
+  opacity: 70%;
+  /*box-shadow: inset 0px 0px 10px;*/
+  padding-top: 30px;
+  padding-right: 5px;
+  margin-bottom: 10px;  
+  height: 50px;
+  text-align: center;
+  display: block;
+  width: 500px;
+  -webkit-transition: text-align 10s;
+}
+
+.externals {
+  opacity: 70%;
+  /*box-shadow: inset 0px 0px 10px;*/
+  padding-top: 30px;
+  /*padding-right: 5px;*/
+  margin-bottom: 10px;
+  border-radius: 2px 2px 2px 2px;
+  background-color: #F28F7B;  
+  height: 50px;
+  text-align: center;
+  display: inline-block;
+  width: 164px;
+}
+
+.externals:hover{
+  box-shadow: inset 0px 0px 10px;
+}
+
+.github{
+  float: left;
+}
+
+.linkedIn{
+  margin-left: 6.5px;
+  margin-bottom: auto;
+}
+
+.tumblr{
+  margin-right: -5px;
+  float: right;
+}
+
+.something{
+  width: 500px;
+  margin-bottom: 10px;
+}
+
+.link:hover {
+  box-shadow: inset 0px 0px 10px;
+}
+
+.aboutMe{
+  border-radius: 5px 5px 2px 2px;
+  background-color: #B7D1BF;
+}
+
+.webGL{
+  border-radius: 2px 2px 2px 2px;
+  background-color: #A09FCC;
+}
+
+.design{
+  border-radius: 2px 2px 2px 2px;
+  background-color: #FDD27E;
+}
+
+.resume{
+  border-radius: 2px 2px 5px 5px;
+  background-color: #CD807F;
 }
 
 .parameters{
