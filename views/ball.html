@@ -11,11 +11,28 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
   </head>
   <body>
+    <div class = 'generatorPage'>
+    <span class='w'>W</span> 
+    <span class='a'>A</span> 
+    <span class='l'>L</span>
+    <span class='k'>K</span>
+    <span class='e'>E</span>
+    <span class='r'>R</span>
+    <span class='space'> </span>
+    <span class='f'>F</span>
+    <span class='l'>L</span>
+    <span class='y'>Y</span>
+    <span class='n'>N</span>
+    <span class='n'>N</span>
+  </div>
+  <div>
+    walker.d.flynn@gmail.com
+  </div>
     <div class='parameters'>
       <p><span class='slider'>red</span><input class='colorchange' id='red' type='range' name='surfacenum' min='0' max = '255'></p>
       <p><span class='slider'>green</span><input class='colorchange' id='green' type='range' name='surfacenum' min='0' max = '255'></p>
       <p><span class='slider'>blue</span><input class='colorchange' id='blue' type='range' name='surfacenum' min='0' max = '255'></p>
-      <p><span class='slider'>surfaces</span><input class='surfacechange' id='surface' type='range' name='surfacenum' min='3' max = '15' value= "5"></p>
+      <p><span class='slider'>surfaces</span><input class='surfacechange' id='surface' type='range' name='surfacenum' min='3' max = '11' value= "5"></p>
       <p><span class='slider'>radius</span><input class='surfacechange' id='outer' type='range' name='surfacenum' min='15' max = '105' value= "55"></p>
       <p><span class='slider'>width</span><input class='surfacechange' id='inner' type='range' name='surfacenum' min='2' max = '50' value= "10"></p>
       <p><span class='slider'>thickness</span><input class='surfacechange' id='thick' type='range' name='surfacenum' min='0.5' max = '5' value= '0.5' step="0.5"></p>
@@ -79,10 +96,8 @@
           if($email.val() === ''){
             alert('you have to input your email');
           } else {
-            ball = new Ball(inner, outer, surfaceCount, thick);
-            var obj = THREE.saveGeometryToObj(ball);
             var email = $email.val();
-            var obj2 = {'obj': obj, 'email': email};
+            var obj2 = {'surface': surfaceCount,'outer': outer, 'inner' : inner, 'thick': thick , 'email': email};
             $.ajax({
               url: '/submit',
               type: 'POST',
@@ -96,29 +111,6 @@
             });
           }
         });
-
-        THREE.saveGeometryToObj = function (geometry) {
-          var s = '';
-          for (i = 0; i < geometry.vertices.length; i++) {
-              s+= 'v '+(geometry.vertices[i].x) + ' ' +
-              geometry.vertices[i].y + ' '+
-              geometry.vertices[i].z + '\n';
-          }
-
-          for (i = 0; i < geometry.faces.length; i++) {
-
-              s+= 'f '+ (geometry.faces[i].a+1) + ' ' +
-              (geometry.faces[i].b+1) + ' '+
-              (geometry.faces[i].c+1);
-
-              if (geometry.faces[i].d !== undefined) {
-                  s+= ' '+ (geometry.faces[i].d+1);
-              }
-              s+= '\n';
-          }
-
-          return s;
-        };
 
         init();
         animate();
@@ -148,7 +140,7 @@
 
           scene = new THREE.Scene();
           col = new THREE.Color('rgb('+red+','+green+','+blue+')');
-          mat = new THREE.MeshLambertMaterial({color: col, side: THREE.DoubleSide, opacity: 1, transparent: false, wireframe: true});
+          mat = new THREE.MeshLambertMaterial({color: col, side: THREE.DoubleSide, opacity: 1, transparent: false, wireframe: false});
           ball = new Ball(inner, outer, surfaceCount, thick);
           surface = new THREE.Mesh(ball, mat);
           console.log(surface);

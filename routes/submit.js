@@ -1,7 +1,4 @@
-var fs = require('fs');
-
-exports.Obj = function(req, res){
-    Ball = function (innerRadius, outerRadius, number, thick) {
+exports.Ball = function (innerRadius, outerRadius, number, thick) {
     if(typeof number === 'string'){
       number = parseInt(number);
     }
@@ -17,6 +14,7 @@ exports.Obj = function(req, res){
     var self = this;
     this.faces = [];
     this.vertices = [];
+    this.obj = '';
     //mathmatical geometry classes
     var Sphere = function(radius){
       this.c = [0,0,0];
@@ -71,6 +69,27 @@ exports.Obj = function(req, res){
       this.e = [-slope[0] - thick/2, yCoord, slope[1]];
     };
   //converts radians to 2d vectors. should find  better way
+
+    var makeMeanOBJ = function (vertices, faces) {
+      var s = '';
+      for (i = 0; i < vertices.length; i++) {
+          s+= 'v '+ vertices[i][0] + ' ' +
+          vertices[i][1] + ' '+
+          vertices[i][2] + '\n';
+      }
+      for (i = 0; i < faces.length; i++) {
+          s+= 'f '+ (faces[i][0]+1) + ' ' +
+          (faces[i][1]+1) + ' '+
+          (faces[i][2]+1);
+
+          if (faces[i][3] !== undefined) {
+              s+= ' '+ (faces[i][3]+1);
+          }
+          s+= '\n';
+      }
+      return s;
+    };
+
     var toVector = function(number) {
       var stringy = number.toString();
       var stringArr = stringy.split('.');
@@ -256,13 +275,13 @@ exports.Obj = function(req, res){
       for (var i = -(radius*7/15); i < radius*7/15; i += step){
         line = new linetype1 (slope, i);
         vert = sphereInterPos(line.o, line.e, sphere.c, sphere.r);
-        pt1Arr.push(new THREE.Vector3(vert[0], vert[1], vert[2]));
+        pt1Arr.push(vert);
       }
       rapAround1(i, pt1Arr, slope, sphere, linetype1);
       for (var i = radius*7/15; i > -(radius*7/15); i -= step){
         line = new linetype2 (slope, i);
         vert = sphereInterNeg(line.o, line.e, sphere.c, sphere.r);
-        pt1Arr.push(new THREE.Vector3(vert[0], vert[1], vert[2]));
+        pt1Arr.push(vert);
       }
       rapAround2(i, pt1Arr, slope, sphere, linetype1);
       return pt1Arr;
@@ -291,23 +310,23 @@ exports.Obj = function(req, res){
           self.vertices.push(vert4[i]);
         }
         for(a = length; a < self.vertices.length-7; a += 4){
-          self.faces.push(new THREE.Face3(a+1, a, a+5));
-          self.faces.push(new THREE.Face3(a+5, a+1, a+3));
-          self.faces.push(new THREE.Face3(a+3, a+5, a+7));
-          self.faces.push(new THREE.Face3(a+7, a+3, a+2));
-          self.faces.push(new THREE.Face3(a+2, a+7, a+6));
-          self.faces.push(new THREE.Face3(a+6, a+2, a));
-          self.faces.push(new THREE.Face3(a, a+6, a+4));
-          self.faces.push(new THREE.Face3(a, a+5, a+4));
+          self.faces.push([a+1, a, a+5]);
+          self.faces.push([a+5, a+1, a+3]);
+          self.faces.push([a+3, a+5, a+7]);
+          self.faces.push([a+7, a+3, a+2]);
+          self.faces.push([a+2, a+7, a+6]);
+          self.faces.push([a+6, a+2, a]);
+          self.faces.push([a, a+6, a+4]);
+          self.faces.push([a, a+5, a+4]);
         }
-        self.faces.push(new THREE.Face3(a+1, a, length + 1));
-        self.faces.push(new THREE.Face3(length +1, a+1, a+3));
-        self.faces.push(new THREE.Face3(a+3, length + 1, length + 3));
-        self.faces.push(new THREE.Face3(length + 2, a+3, a+2));
-        self.faces.push(new THREE.Face3(a+2, length + 3, length + 2));
-        self.faces.push(new THREE.Face3(length + 2, a+2, a));
-        self.faces.push(new THREE.Face3(a, length + 2, length + 0));
-        self.faces.push(new THREE.Face3(a, length + 1, length + 0));
+        self.faces.push([a+1, a, length + 1]);
+        self.faces.push([length +1, a+1, a+3]);
+        self.faces.push([a+3, length + 1, length + 3]);
+        self.faces.push([length + 2, a+3, a+2]);
+        self.faces.push([a+2, length + 3, length + 2]);
+        self.faces.push([length + 2, a+2, a]);
+        self.faces.push([a, length + 2, length + 0]);
+        self.faces.push([a, length + 1, length + 0]);
       };
       init(slope);
     };
@@ -329,35 +348,35 @@ exports.Obj = function(req, res){
         x2 = inRad * Math.cos(rad * twoPi);
         y2 = inRad * Math.sin(rad * twoPi);
         if(axis === 'x'){
-          self.vertices.push(new THREE.Vector3(x1, thick/2, y1));
-          self.vertices.push(new THREE.Vector3(x2, thick/2, y2));
-          self.vertices.push(new THREE.Vector3(x1, -thick/2, y1));
-          self.vertices.push(new THREE.Vector3(x2, -thick/2, y2));
+          self.vertices.push([x1, thick/2, y1]);
+          self.vertices.push([x2, thick/2, y2]);
+          self.vertices.push([x1, -thick/2, y1]);
+          self.vertices.push([x2, -thick/2, y2]);
         } else if (axis === 'y'){
-          self.vertices.push(new THREE.Vector3(thick/2, x1, y1));
-          self.vertices.push(new THREE.Vector3(thick/2, x2, y2));
-          self.vertices.push(new THREE.Vector3(-thick/2, x1, y1));
-          self.vertices.push(new THREE.Vector3(-thick/2, x2, y2));
+          self.vertices.push([thick/2, x1, y1]);
+          self.vertices.push([thick/2, x2, y2]);
+          self.vertices.push([-thick/2, x1, y1]);
+          self.vertices.push([-thick/2, x2, y2]);
         }
       }
       for(a = length; a < self.vertices.length-7; a +=4){
-        self.faces.push(new THREE.Face3(a+1, a, a+5));
-        self.faces.push(new THREE.Face3(a+5, a+1, a+3));
-        self.faces.push(new THREE.Face3(a+3, a+5, a+7));
-        self.faces.push(new THREE.Face3(a+7, a+3, a+2));
-        self.faces.push(new THREE.Face3(a+2, a+7, a+6));
-        self.faces.push(new THREE.Face3(a+6, a+2, a));
-        self.faces.push(new THREE.Face3(a, a+6, a+4));
-        self.faces.push(new THREE.Face3(a, a+5, a+4));
+        self.faces.push([a+1, a, a+5]);
+        self.faces.push([a+5, a+1, a+3]);
+        self.faces.push([a+3, a+5, a+7]);
+        self.faces.push([a+7, a+3, a+2]);
+        self.faces.push([a+2, a+7, a+6]);
+        self.faces.push([a+6, a+2, a]);
+        self.faces.push([a, a+6, a+4]);
+        self.faces.push([a, a+5, a+4]);
       }
-      self.faces.push(new THREE.Face3(a+1, a, length + 1));
-      self.faces.push(new THREE.Face3(length +1, a+1, a+3));
-      self.faces.push(new THREE.Face3(a+3, length + 1, length + 3));
-      self.faces.push(new THREE.Face3(length + 2, a+3, a+2));
-      self.faces.push(new THREE.Face3(a+2, length + 3, length + 2));
-      self.faces.push(new THREE.Face3(length + 2, a+2, a));
-      self.faces.push(new THREE.Face3(a, length + 2, length + 0));
-      self.faces.push(new THREE.Face3(a, length + 1, length + 0));
+      self.faces.push([a+1, a, length + 1]);
+      self.faces.push([length +1, a+1, a+3]);
+      self.faces.push([a+3, length + 1, length + 3]);
+      self.faces.push([length + 2, a+3, a+2]);
+      self.faces.push([a+2, length + 3, length + 2]);
+      self.faces.push([length + 2, a+2, a]);
+      self.faces.push([a, length + 2, length + 0]);
+      self.faces.push([a, length + 1, length + 0]);
     };
 
     var sphere = new Sphere(outerRadius);
@@ -377,12 +396,9 @@ exports.Obj = function(req, res){
       }
       FlatRing('x');
       FlatRing('y');
+      self.obj = makeMeanOBJ(self.vertices, self.faces);
+      console.log(self.obj);
     };
 
     init(number);
-    this.computeCentroids();
-    this.computeFaceNormals();
-  };
-  Ball.prototype = Object.create(THREE.Geometry.prototype);
-  Ball.prototype.constructor = Ball;
 };

@@ -8,6 +8,12 @@ var express = require('express'),
     ball = require('./routes/ball.js'),
     submit = require('./routes/submit.js'),
     about = require('./routes/about.js'),
+    github = require('./routes/github.js'),
+    tumblr = require('./routes/tumblr.js'),
+    design = require('./routes/design.js'),
+    linkedin = require('./routes/linkedin.js'),
+    resumel = require('./routes/resume.js'),
+    objMaker = require('./routes/submit.js'),
     http = require('http'),
     path = require('path'),
     fs = require('fs'),
@@ -42,9 +48,15 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/webGL', ball.generator);
-app.get('/aboutMe', about)
+app.get('/aboutMe', about);
+app.get('/github', github);
+app.get('/tumbler', tumblr);
+app.get('/design', design);
+app.get('/LinkedIn', linkedin);
+app.get('/resume', resumel);
 app.post('/submit', function(req, res){
-  var geo = req.body.obj;
+  var geometry = new objMaker.Ball(req.body.inner, req.body.outer, req.body.surface, req.body.thick);
+  var geo = geometry.obj;
   var email = req.body.email;
   var mailOptions = {
     from: "Walker.Flynn.OBJ@gmail.com", // sender address

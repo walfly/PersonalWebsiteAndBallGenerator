@@ -17,6 +17,33 @@ a {
   margin-top: -200px;
 }
 
+
+.aboutsme{
+  border: 3px solid #B7D1BF;
+  background-color: #B7D1BF;
+  border-radius: 5px;
+  font-size: 14px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 418px;
+  width: 480px;
+  margin-left: -250px;
+  margin-top: -200px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 7px;
+}
+
+.aboutspan{
+  color: black;
+  text-align: auto;
+  line-height: 23px;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+
 .link {
   opacity: 70%;
   /*box-shadow: inset 0px 0px 10px;*/
@@ -86,9 +113,19 @@ a {
   background-color: #FDD27E;
 }
 
+.designDiv{
+  border-radius: 5px 5px 5px 5px;
+  background-color: #FDD27E;
+  font-size: 40px;
+}
+
 .resume{
   border-radius: 2px 2px 5px 5px;
   background-color: #CD807F;
+}
+
+.generatorPage{
+  margin-top: 50px;
 }
 
 .parameters{
@@ -96,7 +133,7 @@ a {
 	display: inline;
 	top: 10px;
 	z-index: 1;
-    float: right;
+  float: right;
 	width: 30%;
 	text-align: right;
 }
@@ -122,7 +159,7 @@ a {
 
 input[type=range] {
     -webkit-appearance: none;
-    background-color: silver;
+    background-color: #A09FCC;
     z-index: 0;
     width: 200px;
     height:20px;
@@ -130,9 +167,9 @@ input[type=range] {
 
 input[type="range"]::-webkit-slider-thumb {
      -webkit-appearance: none;
-    background-color: #666;
+    background-color: #A09FCC;
     z-index: 2;
-    opacity: 0.5;
+    opacity: 0.9;
     width: 10px;
     height: 26px;
 }
@@ -147,6 +184,7 @@ button {
       font-size: 12px;
       font-weight: bold;
       line-height: 20px;
+      background-color: #A09FCC;
       margin-bottom: 0;
       margin-top: 10px;
       margin-right: 40px;
@@ -157,4 +195,8 @@ button {
       -webkit-transition: all 0.3s ease 0s;
       width: 200px; /* auto */
       text-align: center; /* DELETE WHEN WIDTH AUTO */
+}
+
+button:hover{
+  box-shadow: inset 0px 0px 10px;
 }

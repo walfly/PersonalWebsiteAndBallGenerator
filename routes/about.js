@@ -1,3 +1,3 @@
 module.exports = function (req, res){
-  res.render('about', { title: 'generator' });
+  res.render('about', { title: 'about me' });
 };
