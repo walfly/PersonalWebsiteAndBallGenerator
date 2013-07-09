@@ -5,14 +5,10 @@
 
 var express = require('express'),
     routes = require('./routes'),
-    ball = require('./routes/ball.js'),
-    submit = require('./routes/submit.js'),
-    about = require('./routes/about.js'),
+    staticPages = require('./routes/staticpages.js'),
     github = require('./routes/github.js'),
     tumblr = require('./routes/tumblr.js'),
-    design = require('./routes/design.js'),
     linkedin = require('./routes/linkedin.js'),
-    resumel = require('./routes/resume.js'),
     objMaker = require('./routes/submit.js'),
     http = require('http'),
     path = require('path'),
@@ -33,7 +29,7 @@ var smtpTransport = nodemailer.createTransport("SMTP",{
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
+app.engine('html', require('ejs').renderFile);
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
@@ -46,14 +42,14 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
-app.get('/webGL', ball.generator);
-app.get('/aboutMe', about);
+app.get('/', staticPages.index);
+app.get('/webGL', staticPages.generator);
+app.get('/aboutMe', staticPages.about);
 app.get('/github', github);
 app.get('/tumbler', tumblr);
-app.get('/design', design);
+app.get('/design', staticPages.design);
 app.get('/LinkedIn', linkedin);
-app.get('/resume', resumel);
+app.get('/resume', staticPages.resume);
 app.post('/submit', function(req, res){
   var geometry = new objMaker.Ball(req.body.inner, req.body.outer, req.body.surface, req.body.thick);
   var geo = geometry.obj;
