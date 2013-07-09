@@ -4,27 +4,17 @@
  */
 
 var express = require('express'),
-    routes = require('./routes'),
     staticPages = require('./routes/staticpages.js'),
     github = require('./routes/github.js'),
     tumblr = require('./routes/tumblr.js'),
     linkedin = require('./routes/linkedin.js'),
-    objMaker = require('./routes/submit.js'),
+    submit = require('./routes/submit.js'),
     http = require('http'),
-    path = require('path'),
-    fs = require('fs'),
-    nodemailer = require("nodemailer");
+    path = require('path');
 
 var app = express();
 var n = 0;
 
-var smtpTransport = nodemailer.createTransport("SMTP",{
-    service: "Gmail",
-    auth: {
-        user: "Walker.Flynn.OBJ@gmail.com",
-        pass: "FH113pps"
-    }
-});
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -50,32 +40,7 @@ app.get('/tumbler', tumblr);
 app.get('/design', staticPages.design);
 app.get('/LinkedIn', linkedin);
 app.get('/resume', staticPages.resume);
-app.post('/submit', function(req, res){
-  var geometry = new objMaker.Ball(req.body.inner, req.body.outer, req.body.surface, req.body.thick);
-  var geo = geometry.obj;
-  var email = req.body.email;
-  var mailOptions = {
-    from: "Walker.Flynn.OBJ@gmail.com", // sender address
-    to: email, // list of receivers
-    subject: "Your Ball Object", // Subject line
-    text: "Thanks for using my ball generator. If you do actually build this thing send me a picture at this email address and submit it to Instagram #FlynnBall.", // plaintext body
-    attachments: [
-      {
-        fileName: "yourBall.obj",
-        contents: geo 
-      }
-    ]
-  }
-  smtpTransport.sendMail(mailOptions, function(error, response){
-    if(error){
-      console.log(error);
-    }else{
-      console.log("Message sent: " + response.message);
-    }
-  });
-  res.writeHead(200);
-  res.end();
-});
+app.post('/submit', submit);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

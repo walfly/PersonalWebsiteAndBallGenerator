@@ -1,4 +1,40 @@
-exports.Ball = function (innerRadius, outerRadius, number, thick) {
+var nodemailer = require('nodemailer');
+
+module.exports = function (req, res){
+  var smtpTransport = nodemailer.createTransport("SMTP",{
+      service: "Gmail",
+      auth: {
+        user: "Walker.Flynn.OBJ@gmail.com",
+        pass: "FH113pps"
+      }
+  });
+  var geometry = new Ball(req.body.inner, req.body.outer, req.body.surface, req.body.thick);
+  var geo = geometry.obj;
+  var email = req.body.email;
+  var mailOptions = {
+    from: "Walker.Flynn.OBJ@gmail.com", // sender address
+    to: email, // list of receivers
+    subject: "Your Ball Object", // Subject line
+    text: "Thanks for using my ball generator. If you do actually build this thing send me a picture at this email address and submit it to Instagram #FlynnBall.", // plaintext body
+    attachments: [
+      {
+        fileName: "yourBall.obj",
+        contents: geo 
+      }
+    ]
+  }
+  smtpTransport.sendMail(mailOptions, function(error, response){
+    if(error){
+      console.log(error);
+    }else{
+      console.log("Message sent: " + response.message);
+    }
+  });
+  res.writeHead(200);
+  res.end();
+}
+
+var Ball = function (innerRadius, outerRadius, number, thick) {
     if(typeof number === 'string'){
       number = parseInt(number);
     }
@@ -397,7 +433,6 @@ exports.Ball = function (innerRadius, outerRadius, number, thick) {
       FlatRing('x');
       FlatRing('y');
       self.obj = makeMeanOBJ(self.vertices, self.faces);
-      console.log(self.obj);
     };
 
     init(number);
