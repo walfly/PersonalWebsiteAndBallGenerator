@@ -1,32 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-  	<script src="/javascripts/underscore.js"></script>
-    <script src="/javascripts/jquery.js"></script>
-  	<script src="/javascripts/three.min.js"></script>
+  	<script src="/javascripts/lib/underscore.js"></script>
+    <script src="/javascripts/lib/jquery.js"></script>
+  	<script src="/javascripts/lib/three.min.js"></script>
     <script src="/javascripts/Ball.js"></script>
-    <script src="/javascripts/trackball.js"></script>
-    <script src="/javascripts/stats.js"></script>
-    <script src="/javascripts/detector.js"></script>
+    <script src="/javascripts/lib/trackball.js"></script>
+    <script src="/javascripts/lib/detector.js"></script>
     <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
   </head>
   <body>
     <div class = 'generatorPage'>
-    <span class='w'>W</span> 
-    <span class='a'>A</span> 
-    <span class='l'>L</span>
-    <span class='k'>K</span>
-    <span class='e'>E</span>
-    <span class='r'>R</span>
-    <span class='space'> </span>
-    <span class='f'>F</span>
-    <span class='l'>L</span>
-    <span class='y'>Y</span>
-    <span class='n'>N</span>
-    <span class='n'>N</span>
-  </div>
-  <div>
-    walker.d.flynn@gmail.com
+      <a href='/' class = 'email name'>WALKER FLYNN</a>
+    </div>
+  <div class = 'generatorEmail'>
+    <a href = 'mailto:walker.d.flynn@gmail.com' class = 'email'>walker.d.flynn@gmail.com</a>
   </div>
     <div class='parameters'>
       <p><span class='slider'>red</span><input class='colorchange' id='red' type='range' name='surfacenum' min='0' max = '255'></p>
@@ -92,7 +80,6 @@
         });
 
         $convert.on('click', function(){
-          console.log($email.val());
           if($email.val() === ''){
             alert('you have to input your email');
           } else {
@@ -143,7 +130,6 @@
           mat = new THREE.MeshLambertMaterial({color: col, side: THREE.DoubleSide, opacity: 1, transparent: false, wireframe: false});
           ball = new Ball(inner, outer, surfaceCount, thick);
           surface = new THREE.Mesh(ball, mat);
-          console.log(surface);
           scene.add(surface);
 
           // lights
@@ -167,14 +153,6 @@
 
           container = document.getElementById( 'container' );
           container.appendChild( renderer.domElement );
-
-          stats = new Stats();
-          stats.domElement.style.position = 'absolute';
-          stats.domElement.style.top = '0px';
-          stats.domElement.style.zIndex = 100;
-          container.appendChild( stats.domElement );
-
-          //
 
           window.addEventListener( 'resize', onWindowResize, false );
 

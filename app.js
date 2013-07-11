@@ -5,9 +5,7 @@
 
 var express = require('express'),
     staticPages = require('./routes/staticpages.js'),
-    github = require('./routes/github.js'),
-    tumblr = require('./routes/tumblr.js'),
-    linkedin = require('./routes/linkedin.js'),
+    externals = require('./routes/externals.js'),
     submit = require('./routes/submit.js'),
     http = require('http'),
     path = require('path');
@@ -35,10 +33,10 @@ if ('development' == app.get('env')) {
 app.get('/', staticPages.index);
 app.get('/webGL', staticPages.generator);
 app.get('/aboutMe', staticPages.about);
-app.get('/github', github);
-app.get('/tumbler', tumblr);
-app.get('/design', staticPages.design);
-app.get('/LinkedIn', linkedin);
+app.get('/github', externals.github);
+app.get('/tumbler', externals.tumblr);
+app.get('/hashtags', externals.hashtags);
+app.get('/LinkedIn', externals.linkedin);
 app.get('/resume', staticPages.resume);
 app.post('/submit', submit);
 
