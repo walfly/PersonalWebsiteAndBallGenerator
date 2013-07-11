@@ -19,3 +19,5 @@ When the user submits his email the value from the parameter ranges is sent up t
 The server then duplicates the ball geometry as a pair of arrays.  One for faces and one 
 for vertices. This data is then stringified into OBJ format and attached to an email using a
 node mailer. 
+
+http://www.walker-flynn.me
