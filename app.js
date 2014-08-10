@@ -6,7 +6,6 @@
 var express = require('express'),
     staticPages = require('./routes/staticpages.js'),
     externals = require('./routes/externals.js'),
-    submit = require('./routes/submit.js'),
     http = require('http'),
     path = require('path');
 
@@ -31,6 +30,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', staticPages.index);
+app.get('', staticPages.index);
 app.get('/webGL', staticPages.generator);
 app.get('/aboutMe', staticPages.about);
 app.get('/github', externals.github);
@@ -38,7 +38,6 @@ app.get('/cargo', externals.cargo);
 app.get('/hashtags', externals.hashtags);
 app.get('/LinkedIn', externals.linkedin);
 app.get('/resume', staticPages.resume);
-app.post('/submit', submit);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

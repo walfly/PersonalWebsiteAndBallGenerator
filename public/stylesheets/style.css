@@ -23,7 +23,7 @@ a {
   height: 500px;
   width: 500px;
   margin-left: -250px;
-  margin-top: -120px;
+  margin-top: -200px;
 }
 .aboutresume{
   width: 500px;
@@ -115,7 +115,9 @@ a {
 
 .tumblr{
   margin-right: -5px;
-  float: right;
+  position: absolute;
+  /*float: right;*/
+  right:0;
 }
 
 .something{
@@ -240,4 +242,45 @@ button {
 
 button:hover{
   box-shadow: inset 0px 0px 10px;
+}
+
+@media only screen and (max-width: 600px) {
+
+  .centerdiv{
+    position: absolute;
+    left: 50%;
+    margin-top: -100px;
+    top:50%;
+    width: 350px;
+    margin-left: -100px;
+    font-size: 16px;
+  }
+  .aboutresume{
+    width: 350px;
+    margin-bottom: 10px;
+  }
+
+  .aboutsme{
+    font-size: 16px;
+    position: relative;
+    height: auto;
+    width: 340px;
+    left: 0;
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-right: 5px;
+  }
+
+  .personals {
+    width: 174px;
+  }
+  .link {
+    width: 350px;
+  }
+
+  .externals {
+    box-sizing: border-box;
+    height: 80px;
+    width: 114px;
+  }
 }
