@@ -6,8 +6,8 @@ exports.github = function(req, res){
 	res.redirect('http://www.github.com/walfly'); 
 };
 
-exports.tumblr = function(req, res){
-	res.redirect('http://walfly.tumblr.com/'); 
+exports.cargo = function(req, res){
+	res.redirect('http://cargocollective.com/walkerflynn'); 
 };
 
 exports.hashtags = function(req, res){

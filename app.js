@@ -34,7 +34,7 @@ app.get('/', staticPages.index);
 app.get('/webGL', staticPages.generator);
 app.get('/aboutMe', staticPages.about);
 app.get('/github', externals.github);
-app.get('/tumbler', externals.tumblr);
+app.get('/cargo', externals.cargo);
 app.get('/hashtags', externals.hashtags);
 app.get('/LinkedIn', externals.linkedin);
 app.get('/resume', staticPages.resume);
