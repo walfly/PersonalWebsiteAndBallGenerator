@@ -30,7 +30,6 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', staticPages.index);
-app.get('', staticPages.index);
 app.get('/webGL', staticPages.generator);
 app.get('/aboutMe', staticPages.about);
 app.get('/github', externals.github);

@@ -189,6 +189,7 @@ a {
   text-align: center;
   z-index: 1;
   top: -5px;
+  pointer-events:none;
 }
 
 #container{
