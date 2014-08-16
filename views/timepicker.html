@@ -14,9 +14,10 @@
       <a href = 'mailto:walker.d.flynn@gmail.com' class = 'email'>walker.d.flynn@gmail.com</a>
     </div>
     <section id="ng-app" class='calendar' data-ng-app="schedulerApp" backbone-hook>
+      <p> This is a scheduling tool I built for evisors.com. <span class="directions" ng-if="bbState.suggest">Click and drag in the calendar to suggest times. Once you've made your selections you can click <button class="state-toggle" ng-click="switchBBState()">here</button> to switch to the accepting times interface.</span><span class="directions" ng-if="!bbState.suggest">Hover over a time range to highlight a start time for your one hour meeting, then click to select. Click <button class="state-toggle" ng-click="switchBBState()">here</button> to switch to the suggesting times interface</span></p>
       <div ng-controller='evTotalTimes.Ctrl'>
         <h3 class='total-proposed' ng-if='bbState.suggest'>You have proposed <span ng-bind='selections.total' class='total-times' ng-class='{active:selections.total > 0}'></span> <span ng-bind='selections.total|timeFrames'></span> for this consultation</h3>
-        <h3 class='total-proposed' ng-if='!bbState.suggest'>USERNAME proposed <span ng-bind='selections.total' ng-class='{active:selections.total > 0}'></span> timeframes for this consultation</h3>
+        <h3 class='total-proposed' ng-if='!bbState.suggest'>[USERNAME] proposed <span ng-bind='selections.total' ng-class='{active:selections.total > 0}'></span> timeframes for this consultation</h3>
       </div>
       <div class='cal-container'>
         <div data-ng-controller="WeekNavCtrl" bound-calc class='week-nav'>
@@ -63,8 +64,6 @@
           </div>
         </div>
       </div>
-      <!-- this will be removed -->
-      <button id='change-cal-button'>change cal state (only here for dev)</button>
     </section>
     <script type="text/javascript" src="/javascripts/lib/jquery.js"></script>
     <script type="text/javascript" src="/javascripts/lib/angular.min.js"></script>

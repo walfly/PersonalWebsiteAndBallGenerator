@@ -1,13 +1,19 @@
 .calendar{
   background-color: #fff;
   position: fixed;
-  height: 100%;
+  /*height: 100%;*/
   top: 0;
   left: 0;
   max-width: 900px;
   margin: auto;
 }
 
+
+.state-toggle{
+  width: auto;
+  padding: 3px;
+  margin: 0;
+}
 
 .calendar-app > div{
   display: inline-block;
@@ -30,7 +36,7 @@
   .total-proposed .total-times{
     color: #fff;
     position: relative;
-    padding-top: 7px;
+    padding-top: 8px;
     background-color: #cecece;
     box-sizing:border-box;
     -webkit-box-sizing:border-box;
@@ -156,7 +162,7 @@
   }
 
     .week-select-text{
-      margin-top: 2px;
+      margin-top: 5px;
       display: inline-block;
       white-space: nowrap;
     }
@@ -173,7 +179,7 @@
     border-radius: 50%;
     text-align: center;
     margin-top: 1px;
-    padding-top: 1px;
+    padding-top: 4px;
     padding-left: 1px;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -420,7 +426,7 @@
 }
 
   .delete-button p{
-    margin-top: -6px;
+    margin-top: -2px;
     margin-bottom: 0;
     font-size: 20px;
     cursor:pointer;
@@ -700,7 +706,7 @@
     height: 17px;
   }
     .delete-button p{
-      font-size: 17px;
+      font-size: 16px;
     }
 
   .time-display{
