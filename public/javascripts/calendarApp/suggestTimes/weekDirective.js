@@ -1,4 +1,5 @@
-suggestTimeApp.directive('week', function () {
+// week no deps
+module.exports = function () {
   return {
     restrict: 'A',
     transclude: true,
@@ -393,6 +394,6 @@ suggestTimeApp.directive('week', function () {
 
 
     }],
-    template:'<div class="week-container" ng-transclude></div>',
+    template:'<div class="week-container" ng-transclude></div>'
   }
-})
+};

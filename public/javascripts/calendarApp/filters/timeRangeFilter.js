@@ -1,5 +1,5 @@
-// timeRange deps $filter
-exports.timeRange = function ($filter) {
+// timeRange deps 
+exports.timeRange = function () {
   return function (selection) {
     var startTime = selection.time.split(":");
     var startHour = Number(startTime[0]);
@@ -31,7 +31,7 @@ exports.timeRange = function ($filter) {
 };
 
 // convert24to12 no deps
-exports.convert = function () {
+exports.converter = function () {
   return function (time) {
     if(time){
       var hourMin = time.split(':');

@@ -1,3 +1,5 @@
+// ('angular/angular.js');
+
 angular.module('scrollTo', ['todayService', 'selections'])
 .directive('scrollToNine', [
 	'$timeout',

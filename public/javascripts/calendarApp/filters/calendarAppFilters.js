@@ -1,4 +1,4 @@
-require('angular/angular');
+// ('angular/angular.js');
 
 var calendarFiltersApp = angular.module('calendarFilters', []);
 calendarFiltersApp.service('weekdaysService', require('./services/weekdaysService.js'));
@@ -12,8 +12,8 @@ calendarFiltersApp.filter('month', ['monthService', require('./monthFilter.js')]
 calendarFiltersApp.filter('pastDay', require('./pastDayFilter.js'));
 calendarFiltersApp.filter('toArray', require('./toArrayFilter.js'));
 calendarFiltersApp.filter('sortedKeys', require('./sortedKeysFilter.js'));
-calendarFiltersApp.filter('timeRange', ['$filter', require('./timeRangeFilter.js').timeRange]);
-calendarFiltersApp.filter('convert24to12', require('./timeRangeFilter.js').convert);
+calendarFiltersApp.filter('timeRange', require('./timeRangeFilter.js').timeRange);
+calendarFiltersApp.filter('convert24to12', require('./timeRangeFilter.js').converter);
 calendarFiltersApp.filter('positionToTime', require('./positionToTimeFilter.js').positionToTime);
 calendarFiltersApp.filter('nearestBlock', require('./positionToTimeFilter.js').nearestBlock);
 calendarFiltersApp.filter('timeToFloat', require('./positionToTimeFilter.js').timeToFloat);

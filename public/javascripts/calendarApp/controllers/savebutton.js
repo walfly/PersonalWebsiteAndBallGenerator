@@ -1,3 +1,5 @@
+// ('angular/angular.js');
+
 angular.module('saveButton', ['availabilitySelect']).controller('SaveButtonCtrl', ['$scope','selectionService', function ($scope, selections) {
   $scope.showing = false;
 

@@ -1,3 +1,5 @@
+// ('angular/angular.js');
+
 angular.module('selections',['selectionMethods']).service('selectionService', [
 	'$rootScope',
 	'selectionMethods',

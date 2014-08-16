@@ -1,5 +1,5 @@
 // dayOfWeekFromInt deps weekdaysService
-exports.dayofWeekFromInt = function (weekdays) {
+exports.dayOfWeekFromInt = function (weekdays) {
   return function (date) {
     var day = weekdays.getDay(date);
     day = day.slice(0,3);

@@ -1,3 +1,4 @@
+// ('angular/angular.js');
 
 angular.module('availabilitySelect', ['selectionMethods']).service('selectionService', [
   '$rootScope',

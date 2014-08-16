@@ -1,3 +1,5 @@
+// ('angular/angular.js');
+
 angular.module('evTimezone', [])
 	.service('evTimezone.timezoneService', [
 		'$http', 

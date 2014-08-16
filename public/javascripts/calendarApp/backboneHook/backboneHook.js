@@ -1,3 +1,5 @@
+// ('angular/angular.js');
+
 angular.module('backboneHook', []).directive('backboneHook', function () {
 	return {
 		controller: ['$scope', '$element', '$timeout', function ($scope, element, $timeout) {

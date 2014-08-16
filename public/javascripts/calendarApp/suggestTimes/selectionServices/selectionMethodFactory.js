@@ -1,3 +1,5 @@
+// ('angular/angular.js');
+
 angular.module('selectionMethods', ['counter']).factory('selectionMethods',[
   '$filter',
   '$http',

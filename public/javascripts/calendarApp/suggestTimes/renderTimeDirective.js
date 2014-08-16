@@ -1,4 +1,6 @@
-suggestTimeApp.directive('renderTime', function () {
+// renderTime directive no deps
+
+module.exports = function () {
   return {
     require: '^week',
     restrict: 'A',
@@ -50,4 +52,4 @@ suggestTimeApp.directive('renderTime', function () {
     }
   }
 
-});
+};

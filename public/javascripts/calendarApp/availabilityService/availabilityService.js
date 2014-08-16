@@ -1,3 +1,5 @@
+// ('angular/angular.js');
+
 angular.module('availabilityService', ['todayService']).service('availabilityService', ['$http', 'todayService', '$filter', '$rootScope', function ($http, todayService, $filter, rootScope) {
 
   var availability = window.availability;

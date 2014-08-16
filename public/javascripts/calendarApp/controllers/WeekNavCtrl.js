@@ -1,3 +1,5 @@
+// ('angular/angular.js');
+
 angular.module('evWeekNav', ['todayService', 'selections'])
 .controller('WeekNavCtrl', [
   '$scope',

@@ -1,3 +1,6 @@
+// ('angular/angular.js');
+
+
 angular.module('granularityAvailability', []).service('granularityService', function () {
   // the minimum value for changes in the calender 
   this.MINUTESTEP = 60;

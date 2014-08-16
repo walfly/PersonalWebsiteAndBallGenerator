@@ -1,3 +1,5 @@
+// ('angular/angular.js');
+
 var optionApp = angular.module('optionSelectApp', ['granularityScheduler', 'dayTouch']);
 
 // service for storing selected options

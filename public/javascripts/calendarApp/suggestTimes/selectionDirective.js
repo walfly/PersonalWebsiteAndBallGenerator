@@ -1,11 +1,6 @@
-suggestTimeApp.directive('selection', [
-  '$document',
-  '$filter',
-  '$rootScope',
-  'todayService',
-  'dayTouch.getCoords',
-  'dayTouch.swipeAndScroll',
-  function (doc, $filter, $rootScope, todayService, getCoord, swipeAndScroll) {
+// selection directive deps: $document, $filter, $rootScope, todayService, dayTouch.getCoords, dayTouch.swipeAndScroll
+
+module.exports = function (doc, $filter, $rootScope, todayService, getCoord, swipeAndScroll) {
   return {
     restrict: 'A',
     require: '^week',
@@ -216,4 +211,4 @@ suggestTimeApp.directive('selection', [
       
     }
   }
-}])
+};

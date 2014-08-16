@@ -1,11 +1,6 @@
-suggestTimeApp.directive('day', [
-	'todayService',
-	'counter',
-	'$rootScope',
-	'$timeout',
-	'dayTouch.getCoords',
-	'dayTouch.swipeAndScroll',
-	function (todayService, counter, $rootScope, $timeout, getCoords, swipeAndScroll) {
+// day deps: todayService, counter, $rootScope, $timeout, dayTouch.getCoords, dayTouch.swipeAndScroll
+
+module.exports = function (todayService, counter, $rootScope, $timeout, getCoords, swipeAndScroll) {
 	return {
 		require: '^week',
 		transclude: true,
@@ -247,4 +242,4 @@ suggestTimeApp.directive('day', [
 
 		}
 	}
-}])
+};

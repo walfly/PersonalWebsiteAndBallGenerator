@@ -7,11 +7,15 @@
     "www.walker-flynn.cool"
   ],
   "scripts": {
+    "install": "napa",
     "start": "node app.js"
   },
   "dependencies": {
     "express": "3.2.6",
     "ejs": "*"
+  },
+  "napa": {
+    "angular": "angular/bower-angular"
   },
   "engines": {
     "node": "0.8.x"

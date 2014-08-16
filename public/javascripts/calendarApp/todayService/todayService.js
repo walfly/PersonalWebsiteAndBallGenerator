@@ -1,3 +1,5 @@
+// ('angular/angular.js');
+
 angular.module('todayService', []).service('todayService', function () {
   var currentWeek = [];
   var today = new Date();

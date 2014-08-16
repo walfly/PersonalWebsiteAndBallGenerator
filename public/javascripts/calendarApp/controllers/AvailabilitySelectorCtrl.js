@@ -1,3 +1,5 @@
+// ('angular/angular.js');
+
 angular.module('availabilitySelectorCtrl', ['availabilityService', 'todayService', 'availabilitySelect'])
 .controller('CalendarAvbCtrl',[
   '$scope',

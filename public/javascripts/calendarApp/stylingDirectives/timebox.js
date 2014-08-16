@@ -1,3 +1,5 @@
+// ('angular/angular.js');
+
 angular.module('timeBox', []).directive('timeBox', function () {
   return{
     compile: function (element){

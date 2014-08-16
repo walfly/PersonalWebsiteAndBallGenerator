@@ -1,4 +1,5 @@
-suggestTimeApp.directive('pastTime', function () {
+// pastTime directive no deps
+module.exports = function () {
   return {
     restrict: 'A',
     require:'^week',
@@ -24,4 +25,4 @@ suggestTimeApp.directive('pastTime', function () {
 
     }
   }
-});
+};

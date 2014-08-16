@@ -1,3 +1,5 @@
+// ('angular/angular.js');
+
 angular.module('dayTouch', [])
 .factory('dayTouch.getCoords', function () {
 	var dealWithTouches = function (event) {

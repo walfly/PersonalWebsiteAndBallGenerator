@@ -1,3 +1,5 @@
+// ('angular/angular.js');
+
 angular.module('timeLabel', []).directive('timeLabel', function () {
   return{
     compile: function (element){

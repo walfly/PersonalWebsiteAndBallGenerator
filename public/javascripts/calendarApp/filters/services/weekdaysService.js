@@ -13,4 +13,4 @@ module.exports = function () {
   this.getDay = function(day){
     return days[(day)];
   }
-})
+};

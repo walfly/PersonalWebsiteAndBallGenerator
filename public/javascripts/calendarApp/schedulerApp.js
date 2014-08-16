@@ -1,3 +1,5 @@
+// ('angular/angular.js');
+
 var calendarApp = angular.module('schedulerApp', [
 	'selections',
 	'suggestTimeScheduler',
@@ -46,3 +48,4 @@ require('./backboneHook/backboneHook.js');
 require('./scrollToNineAM/scrollToNineDirective.js')
 
 require('./dayTouch/touchFactory.js');
+

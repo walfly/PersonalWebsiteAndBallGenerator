@@ -1,4 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+// ('angular/angular.js');
+
 angular.module('availabilityService', ['todayService']).service('availabilityService', ['$http', 'todayService', '$filter', '$rootScope', function ($http, todayService, $filter, rootScope) {
 
   var availability = window.availability;
@@ -50,6 +52,8 @@ angular.module('availabilityService', ['todayService']).service('availabilitySer
   };
 }]);
 },{}],2:[function(require,module,exports){
+// ('angular/angular.js');
+
 angular.module('backboneHook', []).directive('backboneHook', function () {
 	return {
 		controller: ['$scope', '$element', '$timeout', function ($scope, element, $timeout) {
@@ -80,6 +84,8 @@ angular.module('backboneHook', []).directive('backboneHook', function () {
 	}
 });
 },{}],3:[function(require,module,exports){
+// ('angular/angular.js');
+
 angular.module('evTotalTimes',['selections']).controller('evTotalTimes.Ctrl', [
 	'$scope',
 	'selectionService',
@@ -87,6 +93,8 @@ angular.module('evTotalTimes',['selections']).controller('evTotalTimes.Ctrl', [
 		$scope.selections = selections.getSelectedContainer(); 
 }]);
 },{}],4:[function(require,module,exports){
+// ('angular/angular.js');
+
 angular.module('evWeekNav', ['todayService', 'selections'])
 .controller('WeekNavCtrl', [
   '$scope',
@@ -252,6 +260,8 @@ angular.module('evWeekNav', ['todayService', 'selections'])
 
 
 },{}],5:[function(require,module,exports){
+// ('angular/angular.js');
+
 angular.module('CalendarAvb', [
 	'availabilityService', 
 	'todayService', 
@@ -322,6 +332,8 @@ angular.module('CalendarAvb', [
 
 }]);
 },{}],6:[function(require,module,exports){
+// ('angular/angular.js');
+
 angular.module('dayTouch', [])
 .factory('dayTouch.getCoords', function () {
 	var dealWithTouches = function (event) {
@@ -456,48 +468,60 @@ angular.module('dayTouch', [])
     }
 }]);
 },{}],7:[function(require,module,exports){
-(function () {
-	var calendarFiltersApp = angular.module('calendarFilters', []);
-	require('./services/weekdaysService.js');
-	require('./services/monthService.js');
-	require('./pastDayFilter.js');
-	require('./dayOfWeekFilter.js');
-	require('./dayOfMonthFilter.js');
-	require('./dayOfWeekFromInt.js');
-	require('./monthAbbrFilter.js');
-	require('./monthFilter.js');
-	require('./toArrayFilter.js');
-	require('./sortedKeysFilter.js');
-	require('./timeRangeFilter.js');
-	require('./positionToTimeFilter.js');
-	require('./zerotofour.js');
-}())
+// ('angular/angular.js');
+
+var calendarFiltersApp = angular.module('calendarFilters', []);
+calendarFiltersApp.service('weekdaysService', require('./services/weekdaysService.js'));
+calendarFiltersApp.service('monthService', require('./services/monthService.js'));
+calendarFiltersApp.filter('dayOfWeek',['weekdaysService', require('./dayOfWeekFilter.js')]);
+calendarFiltersApp.filter('dayOfMonth', require('./dayOfMonthFilter.js'));
+calendarFiltersApp.filter('dayOfWeekFromInt',['weekdaysService', require('./dayOfWeekFromInt.js').dayOfWeekFromInt]);
+calendarFiltersApp.filter('intFromDay', require('./dayOfWeekFromInt.js').intFromDay);
+calendarFiltersApp.filter('monthAbbr', ['monthService', require('./monthAbbrFilter.js')]);
+calendarFiltersApp.filter('month', ['monthService', require('./monthFilter.js')]);
+calendarFiltersApp.filter('pastDay', require('./pastDayFilter.js'));
+calendarFiltersApp.filter('toArray', require('./toArrayFilter.js'));
+calendarFiltersApp.filter('sortedKeys', require('./sortedKeysFilter.js'));
+calendarFiltersApp.filter('timeRange', require('./timeRangeFilter.js').timeRange);
+calendarFiltersApp.filter('convert24to12', require('./timeRangeFilter.js').converter);
+calendarFiltersApp.filter('positionToTime', require('./positionToTimeFilter.js').positionToTime);
+calendarFiltersApp.filter('nearestBlock', require('./positionToTimeFilter.js').nearestBlock);
+calendarFiltersApp.filter('timeToFloat', require('./positionToTimeFilter.js').timeToFloat);
+calendarFiltersApp.filter('intToString', require('./zerotofour.js').intToString);
+calendarFiltersApp.filter('timeFrames', require('./zerotofour.js').timeFrames);
+
 },{"./dayOfMonthFilter.js":8,"./dayOfWeekFilter.js":9,"./dayOfWeekFromInt.js":10,"./monthAbbrFilter.js":11,"./monthFilter.js":12,"./pastDayFilter.js":13,"./positionToTimeFilter.js":14,"./services/monthService.js":15,"./services/weekdaysService.js":16,"./sortedKeysFilter.js":17,"./timeRangeFilter.js":18,"./toArrayFilter.js":19,"./zerotofour.js":20}],8:[function(require,module,exports){
-calendarFiltersApp.filter('dayOfMonth', function () {
+// dayOfMonth
+module.exports = function () {
   return function (date) {
     return date.getDate();
   };
-});
+};
 },{}],9:[function(require,module,exports){
-calendarFiltersApp.filter('dayOfWeek', ['weekdaysService', function (weekdays) {
+// dayOfWeek deps weekdaysService
+
+module.exports = function (weekdays) {
   return function (date) {
     var day = weekdays.getDay(date.getDay());
     day = day.slice(0,3);
     day = day.charAt(0).toUpperCase() + day.slice(1);
     return day;
   };
-}]);
+};
 },{}],10:[function(require,module,exports){
-calendarFiltersApp.filter('dayOfWeekFromInt', ['weekdaysService', function (weekdays) {
+// dayOfWeekFromInt deps weekdaysService
+exports.dayOfWeekFromInt = function (weekdays) {
   return function (date) {
     var day = weekdays.getDay(date);
     day = day.slice(0,3);
     day = day.charAt(0).toUpperCase() + day.slice(1);
     return day;
   };
-}]);
+};
 
-calendarFiltersApp.filter('intFromDay', [function () {
+// intFromDay no deps
+
+exports.intFromDay = function () {
   return function (string) {
     var obj = {
       "mon": 0,
@@ -510,11 +534,12 @@ calendarFiltersApp.filter('intFromDay', [function () {
     };
     return obj[string];
   };
-}]);
+};
 
 
 },{}],11:[function(require,module,exports){
-calendarFiltersApp.filter('monthAbbr', ['monthService', function (monthService) {
+// monthAbbr deps monthService
+module.exports = function (monthService) {
   return function (date) {
     var index = date.getMonth();
     var month = monthService.getMonth(index);
@@ -522,22 +547,26 @@ calendarFiltersApp.filter('monthAbbr', ['monthService', function (monthService) 
     month = month.charAt(0).toUpperCase() + month.slice(1);
     return month;
   };
-}]);
+};
 },{}],12:[function(require,module,exports){
-calendarFiltersApp.filter('month', ['monthService', function (monthService) {
+// month deps monthService
+
+module.exports = function (monthService) {
   return function (date) {
     var month = monthService.getMonth(date);
     return month.charAt(0).toUpperCase() + month.slice(1);
   };
-}]);
+};
 },{}],13:[function(require,module,exports){
-calendarFiltersApp.filter('pastDay', function () {
+// pastDay
+module.exports = function () {
   return function (pastDay) {
     return pastDay ? "invalid-day" : "valid-day";
   };
-});
+};
 },{}],14:[function(require,module,exports){
-calendarFiltersApp.filter('positionToTime', function () {
+// positionToTime
+exports.positionToTime = function () {
   return function (position, timeBlock, perHour, MINSTEP) {
     var granualStep = position/timeBlock;
     var min = (granualStep % perHour) * MINSTEP;
@@ -548,25 +577,27 @@ calendarFiltersApp.filter('positionToTime', function () {
     var hours = Math.floor(granualStep/perHour);
     return "" + hours + ":" + min;
   }
-});
-
-calendarFiltersApp.filter('nearestBlock', function () {
+};
+// nearestBlock
+exports.nearestBlock = function () {
   return function (position, timeBlock) {
     var excess = position % timeBlock;
     return position - excess;
   };
-});
-
-calendarFiltersApp.filter('timeToFloat', function () {
+};
+// timeToFloat
+exports.timeToFloat = function () {
   return function (time) {
     time = time.split(':');
     time = Number(time[0]) + (Number(time[1])/60);
     return time;
   };
-});
+};
 
 },{}],15:[function(require,module,exports){
-calendarFiltersApp.service('monthService', function () {
+
+// monthService
+module.exports = function () {
   var months = [
     'january',
     'february',
@@ -590,9 +621,11 @@ calendarFiltersApp.service('monthService', function () {
     date.setDate(0);
     return date.getDate();
   };
-})
+};
 },{}],16:[function(require,module,exports){
-calendarFiltersApp.service('weekdaysService', function () {
+
+//weekdaysService no deps
+module.exports = function () {
   var days = [
     'monday',
     'tuesday',
@@ -605,17 +638,18 @@ calendarFiltersApp.service('weekdaysService', function () {
   this.getDay = function(day){
     return days[(day)];
   }
-})
+};
 },{}],17:[function(require,module,exports){
-calendarFiltersApp.filter('sortedKeys', function () {
+// sortedKeys
+module.exports = function () {
   return function (obj) {
     var keys = Object.keys(obj);
     return keys.sort();
   }
-});
+};
 },{}],18:[function(require,module,exports){
-calendarFiltersApp
-.filter("timeRange",['$filter', function ($filter) {
+// timeRange deps 
+exports.timeRange = function () {
   return function (selection) {
     var startTime = selection.time.split(":");
     var startHour = Number(startTime[0]);
@@ -644,8 +678,10 @@ calendarFiltersApp
     var endTime = '' + endHour + ':' + endMinutes + endAmPm;
     return startTime + ' - ' + endTime;
   }
-}])
-.filter('convert24to12', function () {
+};
+
+// convert24to12 no deps
+exports.converter = function () {
   return function (time) {
     if(time){
       var hourMin = time.split(':');
@@ -657,9 +693,10 @@ calendarFiltersApp
       return "" + hour + ":" + min + ' ' + suffix;
     }
   }
-});
+};
 },{}],19:[function(require,module,exports){
-calendarFiltersApp.filter('toArray', function () {
+// toArray
+module.exports = function () {
   return function (obj) {
     var arr = [];
     angular.forEach(obj, function (item) {
@@ -667,9 +704,10 @@ calendarFiltersApp.filter('toArray', function () {
     });
     return arr;
   }
-})
+};
 },{}],20:[function(require,module,exports){
-calendarFiltersApp.filter('intToString', function () {
+// intToString
+exports.intToString = function () {
 	return function (intiger) {
 		switch (intiger){
 			case 0: 
@@ -701,9 +739,10 @@ calendarFiltersApp.filter('intToString', function () {
 				break;
 		}
 	}
-});
+};
 
-calendarFiltersApp.filter('timeFrames', function () {
+// timeFrames
+exports.timeFrames = function () {
 	return function (sel) {
 		if(sel === 1){
 			return 'timeframe';
@@ -711,8 +750,11 @@ calendarFiltersApp.filter('timeFrames', function () {
 			return 'timeframes';
 		}
 	}
-});
+};
 },{}],21:[function(require,module,exports){
+// ('angular/angular.js');
+
+
 angular.module('granularityAvailability', []).service('granularityService', function () {
   // the minimum value for changes in the calender 
   this.MINUTESTEP = 60;
@@ -733,6 +775,8 @@ angular.module('granularityScheduler', []).service('granularityService', functio
   this.consultationLength = 1;
 });
 },{}],22:[function(require,module,exports){
+// ('angular/angular.js');
+
 var optionApp = angular.module('optionSelectApp', ['granularityScheduler', 'dayTouch']);
 
 // service for storing selected options
@@ -1045,6 +1089,8 @@ optionApp.directive('optionSelect',[
 
 
 },{}],23:[function(require,module,exports){
+// ('angular/angular.js');
+
 var calendarApp = angular.module('schedulerApp', [
 	'selections',
 	'suggestTimeScheduler',
@@ -1060,10 +1106,6 @@ var calendarApp = angular.module('schedulerApp', [
 	'evWeekNav',
 	'evTimezone'
 ]);
-calendarApp.config(function($interpolateProvider) {
-  $interpolateProvider.startSymbol('<%');
-  $interpolateProvider.endSymbol('%>');
-});
 
 require('./controllers/calendarAvailabilityCtrl.js');
 require('./controllers/WeekNavCtrl.js');
@@ -1098,7 +1140,10 @@ require('./scrollToNineAM/scrollToNineDirective.js')
 
 require('./dayTouch/touchFactory.js');
 
+
 },{"./availabilityService/availabilityService.js":1,"./backboneHook/backboneHook.js":2,"./controllers/TotalTimesCtrl.js":3,"./controllers/WeekNavCtrl.js":4,"./controllers/calendarAvailabilityCtrl.js":5,"./dayTouch/touchFactory.js":6,"./filters/calendarAppFilters.js":7,"./granularity/granularityService.js":21,"./optionSelect/optionApp.js":22,"./scrollToNineAM/scrollToNineDirective.js":24,"./stylingDirectives/timebox.js":25,"./stylingDirectives/timelabel.js":26,"./stylingDirectives/weekSlideAnimation.js":27,"./suggestTimes/counter/counter.js":28,"./suggestTimes/selectionServices/selectionMethodFactory.js":33,"./suggestTimes/selectionServices/selectionService.js":34,"./suggestTimes/suggestTimeSchedulerApp.js":35,"./timezoneService/timezoneService.js":37,"./todayService/todayService.js":38}],24:[function(require,module,exports){
+// ('angular/angular.js');
+
 angular.module('scrollTo', ['todayService', 'selections'])
 .directive('scrollToNine', [
 	'$timeout',
@@ -1141,6 +1186,8 @@ angular.module('scrollTo', ['todayService', 'selections'])
 	}
 }]);
 },{}],25:[function(require,module,exports){
+// ('angular/angular.js');
+
 angular.module('timeBox', []).directive('timeBox', function () {
   return{
     compile: function (element){
@@ -1160,6 +1207,8 @@ angular.module('timeBox', []).directive('timeBox', function () {
 });
 
 },{}],26:[function(require,module,exports){
+// ('angular/angular.js');
+
 angular.module('timeLabel', []).directive('timeLabel', function () {
   return{
     compile: function (element){
@@ -1185,6 +1234,8 @@ angular.module('timeLabel', []).directive('timeLabel', function () {
 
 
 },{}],27:[function(require,module,exports){
+// ('angular/angular.js');
+
 angular.module('weekSlide', []).directive('weekSlide', ['$timeout',function ($timeout) {
 	return {
 		restict: "A",		
@@ -1231,6 +1282,8 @@ angular.module('weekSlide', []).directive('weekSlide', ['$timeout',function ($ti
 	};
 }]);
 },{}],28:[function(require,module,exports){
+// ('angular/angular.js');
+
 angular.module('counter', []).service('counter', function () {
   var counter = 0;
   this.getCount = function () {
@@ -1240,14 +1293,9 @@ angular.module('counter', []).service('counter', function () {
   };
 });
 },{}],29:[function(require,module,exports){
-suggestTimeApp.directive('day', [
-	'todayService',
-	'counter',
-	'$rootScope',
-	'$timeout',
-	'dayTouch.getCoords',
-	'dayTouch.swipeAndScroll',
-	function (todayService, counter, $rootScope, $timeout, getCoords, swipeAndScroll) {
+// day deps: todayService, counter, $rootScope, $timeout, dayTouch.getCoords, dayTouch.swipeAndScroll
+
+module.exports = function (todayService, counter, $rootScope, $timeout, getCoords, swipeAndScroll) {
 	return {
 		require: '^week',
 		transclude: true,
@@ -1489,9 +1537,10 @@ suggestTimeApp.directive('day', [
 
 		}
 	}
-}])
+};
 },{}],30:[function(require,module,exports){
-suggestTimeApp.directive('pastTime', function () {
+// pastTime directive no deps
+module.exports = function () {
   return {
     restrict: 'A',
     require:'^week',
@@ -1517,9 +1566,11 @@ suggestTimeApp.directive('pastTime', function () {
 
     }
   }
-});
+};
 },{}],31:[function(require,module,exports){
-suggestTimeApp.directive('renderTime', function () {
+// renderTime directive no deps
+
+module.exports = function () {
   return {
     require: '^week',
     restrict: 'A',
@@ -1571,16 +1622,11 @@ suggestTimeApp.directive('renderTime', function () {
     }
   }
 
-});
+};
 },{}],32:[function(require,module,exports){
-suggestTimeApp.directive('selection', [
-  '$document',
-  '$filter',
-  '$rootScope',
-  'todayService',
-  'dayTouch.getCoords',
-  'dayTouch.swipeAndScroll',
-  function (doc, $filter, $rootScope, todayService, getCoord, swipeAndScroll) {
+// selection directive deps: $document, $filter, $rootScope, todayService, dayTouch.getCoords, dayTouch.swipeAndScroll
+
+module.exports = function (doc, $filter, $rootScope, todayService, getCoord, swipeAndScroll) {
   return {
     restrict: 'A',
     require: '^week',
@@ -1791,8 +1837,10 @@ suggestTimeApp.directive('selection', [
       
     }
   }
-}])
+};
 },{}],33:[function(require,module,exports){
+// ('angular/angular.js');
+
 angular.module('selectionMethods', ['counter']).factory('selectionMethods',[
   '$filter',
   '$http',
@@ -1870,6 +1918,8 @@ angular.module('selectionMethods', ['counter']).factory('selectionMethods',[
   }
 }]);
 },{}],34:[function(require,module,exports){
+// ('angular/angular.js');
+
 angular.module('selections',['selectionMethods']).service('selectionService', [
 	'$rootScope',
 	'selectionMethods',
@@ -2054,21 +2104,39 @@ angular.module('selections',['selectionMethods']).service('selectionService', [
 	
 }]);
 },{}],35:[function(require,module,exports){
-(function () {
-	var suggestTimeApp = angular.module('suggestTimeScheduler', [
-		'counter', 
-		'todayService',
-		'selections',
-		'dayTouch'
-	]);
-	require('./dayDirective.js');
-	require('./weekDirective.js');
-	require('./pastTimeDirective.js');
-	require('./selectionDirective.js');
-	require('./renderTimeDirective.js')
-}());
+// ('angular/angular.js');
+
+var suggestTimeApp = angular.module('suggestTimeScheduler', [
+	'counter', 
+	'todayService',
+	'selections',
+	'dayTouch'
+]);
+suggestTimeApp.directive('day',[
+	'todayService',
+	'counter',
+	'$rootScope',
+	'$timeout',
+	'dayTouch.getCoords',
+	'dayTouch.swipeAndScroll',
+	require('./dayDirective.js')
+]);
+suggestTimeApp.directive('week', require('./weekDirective.js'));
+suggestTimeApp.directive('pastTime', require('./pastTimeDirective.js'));
+suggestTimeApp.directive('selection', [
+	'$document',
+	'$filter',
+	'$rootScope',
+	'todayService',
+	'dayTouch.getCoords',
+	'dayTouch.swipeAndScroll',
+	require('./selectionDirective.js')
+]);
+suggestTimeApp.directive('renderTime', require('./renderTimeDirective.js'));
+
 },{"./dayDirective.js":29,"./pastTimeDirective.js":30,"./renderTimeDirective.js":31,"./selectionDirective.js":32,"./weekDirective.js":36}],36:[function(require,module,exports){
-suggestTimeApp.directive('week', function () {
+// week no deps
+module.exports = function () {
   return {
     restrict: 'A',
     transclude: true,
@@ -2463,10 +2531,12 @@ suggestTimeApp.directive('week', function () {
 
 
     }],
-    template:'<div class="week-container" ng-transclude></div>',
+    template:'<div class="week-container" ng-transclude></div>'
   }
-})
+};
 },{}],37:[function(require,module,exports){
+// ('angular/angular.js');
+
 angular.module('evTimezone', [])
 	.service('evTimezone.timezoneService', [
 		'$http', 
@@ -2492,6 +2562,8 @@ angular.module('evTimezone', [])
 
 	}]);
 },{}],38:[function(require,module,exports){
+// ('angular/angular.js');
+
 angular.module('todayService', []).service('todayService', function () {
   var currentWeek = [];
   var today = new Date();

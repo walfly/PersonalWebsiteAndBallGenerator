@@ -1,3 +1,5 @@
+// ('angular/angular.js');
+
 angular.module('CalendarAvb', [
 	'availabilityService', 
 	'todayService', 

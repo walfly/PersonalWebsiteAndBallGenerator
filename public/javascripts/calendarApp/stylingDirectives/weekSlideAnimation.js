@@ -1,3 +1,5 @@
+// ('angular/angular.js');
+
 angular.module('weekSlide', []).directive('weekSlide', ['$timeout',function ($timeout) {
 	return {
 		restict: "A",		

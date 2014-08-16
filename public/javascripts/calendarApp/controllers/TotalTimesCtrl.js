@@ -1,3 +1,5 @@
+// ('angular/angular.js');
+
 angular.module('evTotalTimes',['selections']).controller('evTotalTimes.Ctrl', [
 	'$scope',
 	'selectionService',
