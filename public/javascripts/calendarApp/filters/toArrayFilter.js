@@ -1,4 +1,5 @@
-calendarFiltersApp.filter('toArray', function () {
+// toArray
+module.exports = function () {
   return function (obj) {
     var arr = [];
     angular.forEach(obj, function (item) {
@@ -6,4 +7,4 @@ calendarFiltersApp.filter('toArray', function () {
     });
     return arr;
   }
-})
+};

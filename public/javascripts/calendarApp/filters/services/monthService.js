@@ -1,4 +1,6 @@
-calendarFiltersApp.service('monthService', function () {
+
+// monthService
+module.exports = function () {
   var months = [
     'january',
     'february',
@@ -22,4 +24,4 @@ calendarFiltersApp.service('monthService', function () {
     date.setDate(0);
     return date.getDate();
   };
-})
+};

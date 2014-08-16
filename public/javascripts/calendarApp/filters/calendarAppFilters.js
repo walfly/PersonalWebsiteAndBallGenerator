@@ -1,16 +1,21 @@
-(function () {
-	var calendarFiltersApp = angular.module('calendarFilters', []);
-	require('./services/weekdaysService.js');
-	require('./services/monthService.js');
-	require('./pastDayFilter.js');
-	require('./dayOfWeekFilter.js');
-	require('./dayOfMonthFilter.js');
-	require('./dayOfWeekFromInt.js');
-	require('./monthAbbrFilter.js');
-	require('./monthFilter.js');
-	require('./toArrayFilter.js');
-	require('./sortedKeysFilter.js');
-	require('./timeRangeFilter.js');
-	require('./positionToTimeFilter.js');
-	require('./zerotofour.js');
-}())
+require('angular/angular');
+
+var calendarFiltersApp = angular.module('calendarFilters', []);
+calendarFiltersApp.service('weekdaysService', require('./services/weekdaysService.js'));
+calendarFiltersApp.service('monthService', require('./services/monthService.js'));
+calendarFiltersApp.filter('dayOfWeek',['weekdaysService', require('./dayOfWeekFilter.js')]);
+calendarFiltersApp.filter('dayOfMonth', require('./dayOfMonthFilter.js'));
+calendarFiltersApp.filter('dayOfWeekFromInt',['weekdaysService', require('./dayOfWeekFromInt.js').dayOfWeekFromInt]);
+calendarFiltersApp.filter('intFromDay', require('./dayOfWeekFromInt.js').intFromDay);
+calendarFiltersApp.filter('monthAbbr', ['monthService', require('./monthAbbrFilter.js')]);
+calendarFiltersApp.filter('month', ['monthService', require('./monthFilter.js')]);
+calendarFiltersApp.filter('pastDay', require('./pastDayFilter.js'));
+calendarFiltersApp.filter('toArray', require('./toArrayFilter.js'));
+calendarFiltersApp.filter('sortedKeys', require('./sortedKeysFilter.js'));
+calendarFiltersApp.filter('timeRange', ['$filter', require('./timeRangeFilter.js').timeRange]);
+calendarFiltersApp.filter('convert24to12', require('./timeRangeFilter.js').convert);
+calendarFiltersApp.filter('positionToTime', require('./positionToTimeFilter.js').positionToTime);
+calendarFiltersApp.filter('nearestBlock', require('./positionToTimeFilter.js').nearestBlock);
+calendarFiltersApp.filter('timeToFloat', require('./positionToTimeFilter.js').timeToFloat);
+calendarFiltersApp.filter('intToString', require('./zerotofour.js').intToString);
+calendarFiltersApp.filter('timeFrames', require('./zerotofour.js').timeFrames);

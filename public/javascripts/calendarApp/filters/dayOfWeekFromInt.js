@@ -1,13 +1,16 @@
-calendarFiltersApp.filter('dayOfWeekFromInt', ['weekdaysService', function (weekdays) {
+// dayOfWeekFromInt deps weekdaysService
+exports.dayofWeekFromInt = function (weekdays) {
   return function (date) {
     var day = weekdays.getDay(date);
     day = day.slice(0,3);
     day = day.charAt(0).toUpperCase() + day.slice(1);
     return day;
   };
-}]);
+};
 
-calendarFiltersApp.filter('intFromDay', [function () {
+// intFromDay no deps
+
+exports.intFromDay = function () {
   return function (string) {
     var obj = {
       "mon": 0,
@@ -20,5 +23,5 @@ calendarFiltersApp.filter('intFromDay', [function () {
     };
     return obj[string];
   };
-}]);
+};
 

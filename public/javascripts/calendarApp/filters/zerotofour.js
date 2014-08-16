@@ -1,4 +1,5 @@
-calendarFiltersApp.filter('intToString', function () {
+// intToString
+exports.intToString = function () {
 	return function (intiger) {
 		switch (intiger){
 			case 0: 
@@ -30,9 +31,10 @@ calendarFiltersApp.filter('intToString', function () {
 				break;
 		}
 	}
-});
+};
 
-calendarFiltersApp.filter('timeFrames', function () {
+// timeFrames
+exports.timeFrames = function () {
 	return function (sel) {
 		if(sel === 1){
 			return 'timeframe';
@@ -40,4 +42,4 @@ calendarFiltersApp.filter('timeFrames', function () {
 			return 'timeframes';
 		}
 	}
-});
+};

@@ -1,5 +1,5 @@
-calendarFiltersApp
-.filter("timeRange",['$filter', function ($filter) {
+// timeRange deps $filter
+exports.timeRange = function ($filter) {
   return function (selection) {
     var startTime = selection.time.split(":");
     var startHour = Number(startTime[0]);
@@ -28,8 +28,10 @@ calendarFiltersApp
     var endTime = '' + endHour + ':' + endMinutes + endAmPm;
     return startTime + ' - ' + endTime;
   }
-}])
-.filter('convert24to12', function () {
+};
+
+// convert24to12 no deps
+exports.convert = function () {
   return function (time) {
     if(time){
       var hourMin = time.split(':');
@@ -41,4 +43,4 @@ calendarFiltersApp
       return "" + hour + ":" + min + ' ' + suffix;
     }
   }
-});
+};

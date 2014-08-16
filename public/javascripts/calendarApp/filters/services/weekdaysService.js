@@ -1,4 +1,6 @@
-calendarFiltersApp.service('weekdaysService', function () {
+
+//weekdaysService no deps
+module.exports = function () {
   var days = [
     'monday',
     'tuesday',
