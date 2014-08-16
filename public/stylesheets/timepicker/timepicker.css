@@ -1,11 +1,29 @@
 .calendar{
   background-color: #fff;
   position: fixed;
-  /*height: 100%;*/
+  height: 100%;
   top: 0;
   left: 0;
   max-width: 900px;
   margin: auto;
+}
+
+.touch-reminder{
+  display: none;
+}
+
+.no-touch .touch-reminder{
+  display: block;
+}
+
+.description-area{
+  display: none;
+}
+
+
+body{
+  margin: 0;
+  background-color: #CD807F;
 }
 
 
@@ -13,6 +31,7 @@
   width: auto;
   padding: 3px;
   margin: 0;
+  background-color: #CD807F;
 }
 
 .calendar-app > div{
@@ -511,9 +530,13 @@
 
 
 @media only screen and (min-width: 550px){
+  .description-area{
+    display: block;
+  }
   .calendar{
     padding: 30px;
     position: relative;
+    height: auto;
     margin-top: 30px;
   }
   .cal-container{
