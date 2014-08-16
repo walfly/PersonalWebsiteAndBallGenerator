@@ -1,0 +1,70 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/timepicker/timepicker.css">
+    <meta name="viewport" content="width=device-width">
+    <script type="text/javascript" src="/javascripts/lib/angular.min.js"></script>
+    <script type="text/javascript" src="/javascripts/calendarApp/bundle.js"></script>
+  </head>
+  <body>
+    <div>
+      <a href='/' class = 'email name'>WALKER FLYNN</a>
+    </div>
+    <div>
+      <a href = 'mailto:walker.d.flynn@gmail.com' class = 'email'>walker.d.flynn@gmail.com</a>
+    </div>
+    <section id="ng-app" class='calendar' data-ng-app="schedulerApp" backbone-hook>
+      <div ng-controller='evTotalTimes.Ctrl'>
+        <h3 class='total-proposed' ng-if='bbState.suggest'>You have proposed <span ng-bind='selections.total' class='total-times' ng-class='{active:selections.total > 0}'></span> <span ng-bind='selections.total|timeFrames'></span> for this consultation</h3>
+        <h3 class='total-proposed' ng-if='!bbState.suggest'>USERNAME proposed <span ng-bind='selections.total' ng-class='{active:selections.total > 0}'></span> timeframes for this consultation</h3>
+      </div>
+      <div class='cal-container'>
+        <div data-ng-controller="WeekNavCtrl" bound-calc class='week-nav'>
+          <button class='move-cal-left' ng-class='{active:bounds.below > 0}' data-ng-click='previousWeek()'><span data-ng-bind='bounds.below'></span></button>
+          <div class='week-list' week-slide>
+            <div data-ng-repeat='week in weeklist' class='week-select {{$index|intToString}}' direction='animateInfo' week-item='week' data-ng-click='goToWeek($index)'><span class='week-select-text'><span ng-bind='week.start|monthAbbr'></span> <span ng-bind='week.start|dayOfMonth'></span> - <span ng-bind='week.end|monthAbbr'></span> <span ng-bind='week.end|dayOfMonth'></span></span><span class='count' ng-class='{active:week.count > 0}' ng-bind='week.count'></span></div>
+          </div>
+          <button class='move-cal-right' ng-class='{active:bounds.above > 0}' data-ng-click='nextWeek()'><span data-ng-bind='bounds.above'></span></button>
+        </div>
+        <div data-ng-controller="CalendarAvbCtrl" class="week-calender">
+          <div class="days-of-week">
+              <div class="week-day" ng-repeat="day in week" ng-click="goToDay($index)" ng-class='{"active":mobileDayControl.dayShowing === $index}'>
+                <span class='day-title' ng-bind="day.dayOfWeek | dayOfWeekFromInt"></span> <span ng-bind='day.date|dayOfMonth'></span>
+                <span ng-if='selections[day.dayString]' class='orange-dot'></span>
+              </div>
+          </div>
+          <!--suggest times ui-->
+          <div week id='week' ng-if='bbState.suggest' scroll-to-nine>
+            <div class="label-container" time-label></div>
+            <div ng-repeat='day in week' ng-class="{'invalid-day': day.hasPast, 'valid-day': !day.hasPast, 'active': mobileDayControl.dayShowing === $index}" day="day" class="calendar-day" id='{{$index|dayOfWeekFromInt}}' ng-transclude>
+              <div ng-if="day.isToday" past-time="currentTime"></div>
+              <div ng-repeat="time in availability[$index]" render-time="time" dayOfWeek="$index" class="availability"></div>
+              <div ng-if="spillover[$index]" render-time="spillover[$index]" dayOfWeek="$index" class="availability"></div>
+              <div ng-repeat="(key, time) in selections[day.dayString]" selection="time" dayreff="day" class="selection"></div>
+              <div time-box></div>
+            </div>
+          </div>
+          <!--select times ui-->
+          <div ng-controller='OptionSelectCtrl' class='week-container' id='week' ng-if='!bbState.suggest' scroll-to-first>
+            <div class="label-container" time-label></div>
+            <div ng-repeat='day in week' class='calendar-day' id='{{$index|dayOfWeekFromInt}}' ng-swipe-left="goToDay(day.dayOfWeek + 1)" ng-swipe-right="goToDay(day.dayOfWeek -1)" ng-class='{"active":mobileDayControl.dayShowing === $index}'>
+              <div ng-repeat="(key, time) in selections[day.dayString]" option="time" class="selection" ng-transclude>
+                <div class="option-position-fix">
+                  <div class="time-display" ng-hide='mouseIn === (day.dayString + time.time)'><span ng-bind="time|timeRange"></span></div>
+                  <div ng-show='mouseIn === (day.dayString + time.time)' option-select class='option-select'><span ng-bind='option|convert24to12'></span></div>
+                  <div chosen-option class='chosen-option'><span ng-bind="selected.time|convert24to12"></span></div>
+                </div>
+              </div>
+              <div time-box></div>
+            </div>
+          </div>
+          <div ng-if='!bbState.suggest' ng-controller='OptionSubmitCtrl'>
+            <p ng-if='selected.hasSelected' class='bottom-selected'>You have chosen a consultation starting at <span ng-bind='selected.option | convert24to12'></span> on <span ng-bind="selected.day.getMonth()|month"></span> <span ng-bind='selected.day.getDate()'></span> </p>
+          </div>
+        </div>
+      </div>
+      <!-- this will be removed -->
+      <button id='change-cal-button'>change cal state (only here for dev)</button>
+    </section>
+  </body>
+</html>

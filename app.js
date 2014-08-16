@@ -31,6 +31,7 @@ if ('development' == app.get('env')) {
 
 app.get('/', staticPages.index);
 app.get('/webGL', staticPages.generator);
+app.get('/calendarDemo', staticPages.calendar);
 app.get('/aboutMe', staticPages.about);
 app.get('/github', externals.github);
 app.get('/cargo', externals.cargo);

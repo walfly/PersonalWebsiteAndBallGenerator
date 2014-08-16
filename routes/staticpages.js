@@ -6,6 +6,9 @@ exports.generator = function (req, res){
   res.render('ball.html');
 };
 
+exports.calendar = function (req, res) {
+	res.render('timepicker.html');
+};
 
 exports.resume = function (req, res){
   res.render('resume.html');
