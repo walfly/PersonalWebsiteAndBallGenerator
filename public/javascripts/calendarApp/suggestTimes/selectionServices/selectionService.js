@@ -13,6 +13,16 @@ angular.module('selections',['selectionMethods']).service('selectionService', [
 
 	this.selectedDates.total = 0;
 
+	var isEmptyObject = function (obj) {
+		for(var prop in obj){
+			if(obj.hasOwnProperty(prop)){
+				return false;
+			}
+		}
+		return true;
+	};
+
+
 	var getKey = function (date) {
 		var year = date.getFullYear();
 		var month = (date.getMonth() < 10) ? '0' + date.getMonth() : date.getMonth();
@@ -150,6 +160,7 @@ angular.module('selections',['selectionMethods']).service('selectionService', [
 
 	this.removeDate = function (date){
 		$timeout(function() {
+			selectedDates.total --;
 			var key = getKey(date.date);
 			if(selectedDates.selections[key]){
 				if(selectedDates.selections[key][date.created]){
@@ -160,7 +171,6 @@ angular.module('selections',['selectionMethods']).service('selectionService', [
 			if(selectedDates.selections[key] && isEmptyObject(selectedDates.selections[key])){
 				delete selectedDates.selections[key];
 			}
-			selectedDates.total --;
 		});
 	};
 

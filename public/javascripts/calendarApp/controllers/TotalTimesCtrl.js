@@ -5,4 +5,5 @@ angular.module('evTotalTimes',['selections']).controller('evTotalTimes.Ctrl', [
 	'selectionService',
 	function ($scope, selections) {
 		$scope.selections = selections.getSelectedContainer(); 
+
 }]);
