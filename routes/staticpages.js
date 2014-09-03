@@ -17,3 +17,7 @@ exports.resume = function (req, res){
 exports.index = function (req, res){
   res.render('index.html');
 };
+
+exports.fml = function (req, res){
+  res.render('fml.html');
+};

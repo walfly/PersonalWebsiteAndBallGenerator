@@ -1,7 +1,7 @@
 {
   "name": "walker-flynn.me",
   "subdomain": "walker-flynn",
-  "version": "0.0.1-33",
+  "version": "0.0.1-38",
   "domains": [
     "walker-flynn.cool",
     "www.walker-flynn.cool"
@@ -10,8 +10,10 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "ejs": "*",
     "express": "3.2.6",
-    "ejs": "*"
+    "twit": "^1.1.18",
+    "underscore": "^1.7.0"
   },
   "engines": {
     "node": "0.8.x"

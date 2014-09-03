@@ -6,6 +6,7 @@
 var express = require('express'),
     staticPages = require('./routes/staticpages.js'),
     externals = require('./routes/externals.js'),
+    twitter = require('./routes/twitterReq.js'),
     http = require('http'),
     path = require('path');
 
@@ -38,6 +39,9 @@ app.get('/cargo', externals.cargo);
 app.get('/hashtags', externals.hashtags);
 app.get('/LinkedIn', externals.linkedin);
 app.get('/resume', staticPages.resume);
+app.get('/fml', staticPages.fml);
+
+app.get('/api/tweets', twitter);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

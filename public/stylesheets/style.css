@@ -142,8 +142,13 @@ a {
 }
 
 .design{
-  border-radius: 2px 2px 5px 5px;
+  border-radius: 2px 2px 2px 2px;
   background-color: #CD807F;
+}
+
+.fml{
+  border-radius: 2px 2px 5px 5px;
+  background-color: #9fc4cc;
 }
 
 .designDiv{
