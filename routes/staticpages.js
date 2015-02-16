@@ -24,4 +24,4 @@ exports.fml = function (req, res){
 
 exports.ideafulWidget = function (req, res) {
   res.render('ideafulWidget.html')
-}
+};
