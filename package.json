@@ -13,7 +13,7 @@
     "ejs": "*",
     "express": "3.4.0",
     "twit": "^1.1.18",
-    "underscore": "^1.7.0"
+    "underscore": "1.6.0"
   },
   "engines": {
     "node": "0.8.x"
