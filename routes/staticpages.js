@@ -25,3 +25,7 @@ exports.fml = function (req, res){
 exports.ideafulWidget = function (req, res) {
   res.render('ideafulwidget.html')
 };
+
+exports.hydro = function (req, res){
+  res.res('hydro.html');
+};
