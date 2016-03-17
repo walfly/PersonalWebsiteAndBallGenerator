@@ -18,12 +18,10 @@ a {
 
 .centerdiv{
   position: absolute;
-  top: 50%;
   left: 50%;
   height: 500px;
   width: 500px;
   margin-left: -250px;
-  margin-top: -200px;
 }
 .aboutresume{
   width: 500px;
@@ -163,6 +161,20 @@ a {
   float: left;
 }
 
+.ideaful{
+  border-radius: 2px 2px 5px 5px;
+  background-color: #B7D1BF;
+}
+
+.carousel{
+  border-radius: 2px 2px 5px 5px;
+  background-color: #F28F7B;
+}
+
+.hydroponics{
+  background-color: #A09FCC;
+  border-radius: 2px 2px 5px 5px;
+}
 
 .generatorPage{
   width: 200px;

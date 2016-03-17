@@ -21,3 +21,7 @@ exports.index = function (req, res){
 exports.fml = function (req, res){
   res.render('fml.html');
 };
+
+exports.hydro = function (req, res){
+  res.res('hydro.html');
+};
