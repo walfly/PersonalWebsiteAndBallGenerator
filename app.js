@@ -40,8 +40,8 @@ app.get('/hashtags', externals.hashtags);
 app.get('/LinkedIn', externals.linkedin);
 app.get('/resume', staticPages.resume);
 app.get('/fml', staticPages.fml);
-app.get('/ideaful-widget', staticPages.ideafulWidget)
-app.get('/hydronics', staticpages.hydro);
+app.get('/ideaful-widget', staticPages.ideafulWidget);
+app.get('/hydronics', staticPages.hydro);
 
 app.get('/api/tweets', twitter);
 
